@@ -1,3 +1,4 @@
+
 # Library imports
 from vex import *
 
@@ -5,9 +6,11 @@ controller_1 = Controller(PRIMARY) ##This is the controller object so we can get
 conveyer = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
 right_motor = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True) 
 left_motor = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False)   #port 10 connect to the left, port 9 connect to the right
-claw = Motor(Ports.PORT12, GearSetting.RATIO_18_1,True)     #claw on port 12 , swipe on 11, front black thingy on 13
+#swipe on 11, front black thingy on 13
 swipe = Motor(Ports.PORT11, GearSetting.RATIO_6_1,True)
 FrontSpindle = Motor(Ports.PORT13, GearSetting.RATIO_18_1, True)
+
+claw.set(False)
 
 def conveyerstart():
     conveyer.spin(FORWARD)
@@ -21,12 +24,10 @@ def spindlestop():
     FrontSpindle.stop()
 
 
-def ClawUpDown():
-    if claw.position(DEGREES) == 0:
-        claw.spin_to_position(30,DEGREES,wait=True)
-    else:
-        claw.spin_to_position(0,DEGREES,wait=True)
-    wait(1,SECONDS)
+def ClawUp():
+    claw.set(False)
+def ClawDown():
+    claw.set(True)
     
 
 def SwipeUpDown():
@@ -54,42 +55,30 @@ def left(degree):
     left_motor.spin_for(REVERSE,degree,TURNS,wait=False)
 
 
-FrontSpindle.set_velocity(50,PERCENT)
+FrontSpindle.set_velocity(25,PERCENT)
 conveyer.set_velocity(50,PERCENT) #works at 50%
 
 
-controller_1.buttonX.pressed(ClawUpDown)
-controller_1.buttonR1.pressed(conveyerstart)
-controller_1.buttonR1.released(conveyerstop)
-controller_1.buttonR2.pressed(conveyerreverse)
-controller_1.buttonR2.released(conveyerstop)
-controller_1.buttonA.pressed(spindlestart)
-controller_1.buttonA.released(spindlestop)
 
-def driver_control():
-    while True:
+controller_1.buttonR1.pressed(spindlestart)
+controller_1.buttonR2.pressed(spindlestop)
+controller_1.buttonL1.pressed(ClawUp)
+controller_1.buttonL2.pressed(ClawDown)
 
-        ##MOTOR CONTROL
-        right_motor.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
-        left_motor.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
-        claw.set_velocity(controller_1.axis2.position(),PERCENT)
-        left_motor.spin(FORWARD)
-        right_motor.spin(FORWARD)
-        claw.spin(FORWARD)
+# Main Controller loop to set motors to controller axis postiions
+while True:
 
-        wait(5, MSEC)
-    pass
-
-def autonomous():
-    
-    FrontSpindle.spin(FORWARD)
+    ##MOTOR CONTROL
+    right_motor.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
+    left_motor.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+    conveyer.set_velocity((controller_1.axis2.position()*0.5),PERCENT)
+    right_motor.spin(FORWARD)
+    left_motor.spin(FORWARD)
     conveyer.spin(FORWARD)
-    foward(17.32)
-    right(180)  
-    backward(20)
-    ClawUpDown
-
     wait(5, MSEC)
-    pass
+
+
+
+
 
 
