@@ -8,7 +8,7 @@ right_motor = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True)
 left_motor = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False)   #port 10 connect to the left, port 9 connect to the right
 #swipe on 11, front black thingy on 13
 
-FrontSpindle = Motor(Ports.PORT13, GearSetting.RATIO_18_1, True)
+FrontSpindle = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)
 
 claw.set(False)
 
