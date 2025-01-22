@@ -1,7 +1,7 @@
 from vex import *
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
-conveyer = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
+conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
 right_motor1 = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True) 
 left_motor1 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False) #port 10 connect to the left, port 9 connect to the right
 right_motor2 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, True) 
@@ -12,12 +12,12 @@ FrontSpindle = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
 
 claw.set(False)
 
-def conveyerstart():
-    conveyer.spin(FORWARD)
-def conveyerreverse():
-    conveyer.spin(REVERSE)
-def conveyerstop():
-    conveyer.stop()
+def conveyorstart():
+    conveyor.spin(FORWARD)
+def conveyorreverse():
+    conveyor.spin(REVERSE)
+def conveyorstop():
+    conveyor.stop()
 def spindlestart():
     FrontSpindle.spin(FORWARD)
 def spindlestop():
@@ -64,8 +64,8 @@ def left(degree):
 
 def autonomous():
     FrontSpindle.set_velocity(25,PERCENT)
-    conveyer.set_velocity(50,PERCENT) #works at 50%
-    conveyer.spin(FORWARD)
+    conveyor.set_velocity(50,PERCENT) #works at 50%
+    conveyor.spin(FORWARD)
     FrontSpindle.spin(FORWARD)
     forward(58.42)
     right(135)
@@ -74,6 +74,8 @@ def autonomous():
     wait(3, SECONDS)
     right(90)
     forward(25)
+    FrontSpindle.spin(FORWARD)
+    conveyorstart()
 
 
 
@@ -85,5 +87,5 @@ def autonomous():
 while True:
     ##MOTOR CONTROL
     FrontSpindle.spin(FORWARD)
-    conveyer.spin(FORWARD)
+    conveyor.spin(FORWARD)
     wait(5, MSEC)
