@@ -37,7 +37,7 @@ def SwipeUpDown():
         swipe.spin_to_position(0,DEGREES,wait=True)
 
 
-def foward(length):
+def forward(length):
     length = length / 13.5
     right_motor1.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
     left_motor1.spin_for(FORWARD,length,TURNS,wait=False)
@@ -62,15 +62,18 @@ def left(degree):
     right_motor2.spin_for(FORWARD,degree,TURNS,wait=False)
     left_motor2.spin_for(REVERSE,degree,TURNS,wait=False)
 
-
-FrontSpindle.set_velocity(25,PERCENT)
-conveyer.set_velocity(50,PERCENT) #works at 50%
-conveyer.spin(FORWARD)
-FrontSpindle.spin(FORWARD)
-foward(58.42)
-right(135)
-backward(17)
-ClawDown()
+def autonomous():
+    FrontSpindle.set_velocity(25,PERCENT)
+    conveyer.set_velocity(50,PERCENT) #works at 50%
+    conveyer.spin(FORWARD)
+    FrontSpindle.spin(FORWARD)
+    forward(58.42)
+    right(135)
+    backward(17)
+    ClawDown()
+    wait(3, SECONDS)
+    right(90)
+    forward(25)
 
 
 
@@ -80,7 +83,6 @@ ClawDown()
 
 # Main Controller loop to set motors to controller axis postiions
 while True:
-
     ##MOTOR CONTROL
     FrontSpindle.spin(FORWARD)
     conveyer.spin(FORWARD)
