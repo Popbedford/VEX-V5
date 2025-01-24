@@ -1,5 +1,7 @@
 from vex import *
 
+brain = Brain()
+
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
 conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
 right_motor1 = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True) 
@@ -7,7 +9,7 @@ left_motor1 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False) #port 10 connec
 right_motor2 = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
 left_motor2 = Motor(Ports.PORT13, GearSetting.RATIO_6_1, False)   
 #swipe on 11, front black thingy on 13
-
+claw = Pneumatics(brain.three_wire_port.a)
 FrontSpindle = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
 
 claw.set(False)
@@ -30,11 +32,6 @@ def ClawDown():
     claw.set(True)
     
 
-def SwipeUpDown():
-    if swipe.position(DEGREES) == 0:
-        swipe.spin_to_position(90,DEGREES,wait=True)
-    else:
-        swipe.spin_to_position(0,DEGREES,wait=True)
 
 
 def forward(length):
