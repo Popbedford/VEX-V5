@@ -4,8 +4,8 @@ controller_1 = Controller(PRIMARY) ##This is the controller object so we can get
 conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
 right_motor1 = Motor(Ports.PORT9, GearSetting.RATIO_18_1, True) 
 left_motor1 = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False) #port 10 connect to the left, port 9 connect to the right
-right_motor2 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, True) 
-left_motor2 = Motor(Ports.PORT13, GearSetting.RATIO_18_1, False)   
+right_motor2 = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
+left_motor2 = Motor(Ports.PORT13, GearSetting.RATIO_6_1, False)   
 #swipe on 11, front black thingy on 13
 
 FrontSpindle = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
@@ -63,17 +63,21 @@ def left(degree):
     left_motor2.spin_for(REVERSE,degree,TURNS,wait=False)
 
 def autonomous():
+    right_motor1.set_velocity(65,PERCENT)
+    left_motor1.set_velocity(65,PERCENT)
+    right_motor2.set_velocity(90,PERCENT)
+    left_motor2.set_velocity(90,PERCENT)
     FrontSpindle.set_velocity(25,PERCENT)
     conveyor.set_velocity(50,PERCENT) #works at 50%
     conveyor.spin(FORWARD)
     FrontSpindle.spin(FORWARD)
-    forward(58.42)
-    right(135)
-    backward(17)
+    backward(58.42)
+    left(135)
+    forward(17)
     ClawDown()
     wait(3, SECONDS)
-    right(90)
-    forward(25)
+    left(90)
+    backward(25)
     FrontSpindle.spin(FORWARD)
     conveyorstart()
 
