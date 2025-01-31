@@ -71,10 +71,9 @@ def autonomous():
 
 def user_control():
     FrontSpindle.set_velocity(50,PERCENT)
-    right_motor1.set_velocity(50,RPM)
-    right_motor2.set_velocity(300,RPM)
+    
     controller_1.buttonR1.pressed(MoveSpindle)
-    controller_1.buttonDown.pressed(test_move)
+
     controller_1.buttonL1.pressed(MoveClaw)
     
     while True:
