@@ -8,7 +8,6 @@ right_motor1 = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True)
 left_motor1 = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
 right_motor2 = Motor(Ports.PORT12, GearSetting.RATIO_18_1, True) 
 left_motor2 = Motor(Ports.PORT20, GearSetting.RATIO_18_1, False) 
-#swipe on 11, front black thingy on 13
 claw = Pneumatics(brain.three_wire_port.a)
 FrontSpindle = Motor(Ports.PORT2, GearSetting.RATIO_6_1, False)
 claw.close()
@@ -48,47 +47,44 @@ def backward(length):
     right_motor2.spin_for(REVERSE,length,TURNS,wait=False)
     left_motor2.spin_for(REVERSE,length,TURNS,wait=True)
 def right(degree):
-    degree = degree / 90 * 1.02
+    degree = degree / 90 * 0.96
     left_motor1.spin_for(FORWARD,degree,TURNS,wait=False) 
     right_motor1.spin_for(REVERSE,degree,TURNS,wait=False) #0.96 spin will turn 90 degrees
     left_motor2.spin_for(FORWARD,degree,TURNS,wait=False) 
     right_motor2.spin_for(REVERSE,degree,TURNS,wait=True)
 def left(degree):
-    degree = degree / 90 *1.02
+    degree = degree / 90 * 0.96
     right_motor1.spin_for(FORWARD,degree,TURNS,wait=False)
     left_motor1.spin_for(REVERSE,degree,TURNS,wait=False)
     right_motor2.spin_for(FORWARD,degree,TURNS,wait=False)
     left_motor2.spin_for(REVERSE,degree,TURNS,wait=True)
 
-
-right_motor1.set_velocity(45/3,PERCENT)
+right_motor1.set_velocity(45/3*1.05,PERCENT)
 left_motor1.set_velocity(45/3,PERCENT)
-right_motor2.set_velocity(45,PERCENT)
+right_motor2.set_velocity(45*1.05,PERCENT)
 left_motor2.set_velocity(45,PERCENT)
 FrontSpindle.set_velocity(40,PERCENT)
 conveyor.set_velocity(50,PERCENT) #works at 50%
 backward(33)
-wait(3,SECONDS)
 ClawDown()
 SpinConveyor()
 SpinSpindle()
-right(90)
+right(105)
 foward(23)
 
-    
 
 # def user_control():
-#     FrontSpindle.set_velocity(50,PERCENT)
-#     controller_1.buttonR1.pressed(MoveSpindle)
+#     FrontSpindle.set_velocity(100,PERCENT)
     
+#     controller_1.buttonR1.pressed(MoveSpindle)
 #     controller_1.buttonL1.pressed(MoveClaw)
     
 #     while True:
 
-#     ##MOTOR CONTROL
-#         right_motor1.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())*0.5, PERCENT)
-#         left_motor1.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())*0.5, PERCENT)
-#         right_motor2.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
+#     #MOTOR CONTROL
+#         right_motor1.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3*1.05, PERCENT)
+#         left_motor1.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())/3, PERCENT)
+#         right_motor2.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())*1.05, PERCENT)
 #         left_motor2.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
 #         conveyor.set_velocity((controller_1.axis2.position())*0.65,PERCENT)
 #         right_motor1.spin(FORWARD)
@@ -98,3 +94,10 @@ foward(23)
 #         conveyor.spin(FORWARD)
 
 #         wait(5, MSEC)
+
+
+# # create competition instance
+# comp = Competition(user_control, autonomous)
+
+# # actions to do when the program starts
+# brain.screen.clear_screen()
