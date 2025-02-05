@@ -38,26 +38,27 @@ def foward(length):
 
     right_motor1.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
     left_motor1.spin_for(FORWARD,length,TURNS,wait=False)
-    right_motor2.spin_for(FORWARD,length*6,TURNS,wait=False)  #one full turn will move 13.5 inches
-    left_motor2.spin_for(FORWARD,length*6,TURNS,wait=True)
+    right_motor2.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
+    left_motor2.spin_for(FORWARD,length,TURNS,wait=True)
 def backward(length):
     length = length / 13.5
     right_motor1.spin_for(REVERSE,length,TURNS,wait=False)
     left_motor1.spin_for(REVERSE,length,TURNS,wait=False)
-    right_motor2.spin_for(REVERSE,length*6,TURNS,wait=False)
-    left_motor2.spin_for(REVERSE,length*6,TURNS,wait=True)
+    right_motor2.spin_for(REVERSE,length,TURNS,wait=False)
+    left_motor2.spin_for(REVERSE,length,TURNS,wait=True)
 def right(degree):
     degree = degree / 90 * 0.96
     left_motor1.spin_for(FORWARD,degree,TURNS,wait=False) 
     right_motor1.spin_for(REVERSE,degree,TURNS,wait=False) #0.96 spin will turn 90 degrees
-    left_motor2.spin_for(FORWARD,degree*6,TURNS,wait=False) 
-    right_motor2.spin_for(REVERSE,degree*6,TURNS,wait=True)
+    left_motor2.spin_for(FORWARD,degree,TURNS,wait=False) 
+    right_motor2.spin_for(REVERSE,degree,TURNS,wait=True)
 def left(degree):
     degree = degree / 90 * 0.96
     right_motor1.spin_for(FORWARD,degree,TURNS,wait=False)
     left_motor1.spin_for(REVERSE,degree,TURNS,wait=False)
-    right_motor2.spin_for(FORWARD,degree*6,TURNS,wait=False)
-    left_motor2.spin_for(REVERSE,degree*6,TURNS,wait=True)
+    right_motor2.spin_for(FORWARD,degree,TURNS,wait=False)
+    left_motor2.spin_for(REVERSE,degree,TURNS,wait=True)
+
 def autonomous():
     right_motor1.set_velocity(45/3*1.05,PERCENT)
     left_motor1.set_velocity(45/3,PERCENT)
@@ -67,11 +68,11 @@ def autonomous():
     conveyor.set_velocity(50,PERCENT) #works at 50%
     backward(33)
     ClawDown()
-    conveyor.spin(FORWARD)
-    FrontSpindle.spin(FORWARD)
-    right(90)
+    SpinConveyor()
+    SpinSpindle()
+    right(105)
     foward(23)
-    
+
 
 def user_control():
     FrontSpindle.set_velocity(100,PERCENT)
