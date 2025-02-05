@@ -25,7 +25,14 @@ def MoveSpindle():
         FrontSpindle.spin(FORWARD)
     else:
         FrontSpindle.stop()
-
+def SpinSpindle():
+    FrontSpindle.spin(FORWARD)
+def StopSpindle():
+    FrontSpindle.stop()
+def SpinConveyor():
+    conveyor.spin(FORWARD)
+def StopConveyor():
+    conveyor.stop()
 def foward(length):
     length = length / 13.5
 
@@ -52,10 +59,10 @@ def left(degree):
     right_motor2.spin_for(FORWARD,degree*6,TURNS,wait=False)
     left_motor2.spin_for(REVERSE,degree*6,TURNS,wait=True)
 def autonomous():
-    right_motor1.set_velocity(90/3,PERCENT)
-    left_motor1.set_velocity(90/3,PERCENT)
-    right_motor2.set_velocity(90,PERCENT)
-    left_motor2.set_velocity(90,PERCENT)
+    right_motor1.set_velocity(45/3,PERCENT)
+    left_motor1.set_velocity(45/3,PERCENT)
+    right_motor2.set_velocity(45,PERCENT)
+    left_motor2.set_velocity(45,PERCENT)
     FrontSpindle.set_velocity(40,PERCENT)
     conveyor.set_velocity(50,PERCENT) #works at 50%
     backward(33)
