@@ -71,7 +71,7 @@ def autonomous():
     SpinConveyor()
     SpinSpindle()
     right(105)
-    foward(23)
+    foward(46)
 
 
 def user_control():
