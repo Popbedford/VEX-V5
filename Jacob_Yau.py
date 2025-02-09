@@ -60,17 +60,17 @@ def left(degree):
     left_motor2.spin_for(REVERSE,degree,TURNS,wait=True)
 
 def autonomous():
-    right_motor1.set_velocity(45/3*1.05,PERCENT)
-    left_motor1.set_velocity(45/3,PERCENT)
-    right_motor2.set_velocity(45*1.05,PERCENT)
-    left_motor2.set_velocity(45,PERCENT)
-    FrontSpindle.set_velocity(40,PERCENT)
-    conveyor.set_velocity(50,PERCENT) #works at 50%
-    backward(33)
+    right_motor1.set_velocity(55/3,PERCENT)
+    left_motor1.set_velocity(55/3,PERCENT)
+    right_motor2.set_velocity(55,PERCENT)
+    left_motor2.set_velocity(55,PERCENT)
+    FrontSpindle.set_velocity(50,PERCENT)
+    conveyor.set_velocity(80,PERCENT) #works at 5 H0%
+    backward(40)
     ClawDown()
     SpinConveyor()
     SpinSpindle()
-    right(105)
+    right(90)
     foward(46)
 
 
@@ -83,11 +83,11 @@ def user_control():
     while True:
 
     #MOTOR CONTROL
-        right_motor1.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3*1.05, PERCENT)
+        right_motor1.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3, PERCENT)
         left_motor1.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())/3, PERCENT)
-        right_motor2.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())*1.05, PERCENT)
+        right_motor2.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
         left_motor2.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
-        conveyor.set_velocity((controller_1.axis2.position())*0.65,PERCENT)
+        conveyor.set_velocity((controller_1.axis2.position()),PERCENT)
         right_motor1.spin(FORWARD)
         left_motor1.spin(FORWARD)
         right_motor2.spin(FORWARD)
