@@ -69,33 +69,72 @@ def autonomous():
     conveyor.set_velocity(75,PERCENT) #works at 50%
     SpinConveyor()
     SpinSpindle()
+    #back to stake
     backward(10)
+    ClawDown()
+    #turn and move to bottom right corner
     right(90)
     backward(23.08)
     right(45)
     backward(33.64)
     ClawUp()
+    #place down stake, move back out and get the stake on the left
     foward(32.64)
     right(135)
     backward(70)
     ClawDown()
+    #grabed the stake, move the bottom left corner
     backward(23.08)
     left(45)
     backward(33.64)
     ClawUp()
+    #move throught the climb thing and grab stake in top middle
     foward(131)
     right(90)
     backward(33)
     ClawDown()
     left(45)
     backward(23.08*2)
+    #move to to left
     right(45)
     backward(33)
     ClawUp()
+    #grab stake from top left
     right(135)
     backward(35)
     ClawDown()
+    #place stake to top right
     backward(93)
     left(45)
     backward(15)
     ClawUp()
+
+
+# def user_control():
+#     FrontSpindle.set_velocity(100,PERCENT)
+    
+#     controller_1.buttonR1.pressed(MoveSpindle)
+#     controller_1.buttonL1.pressed(MoveClaw)
+    
+#     while True:
+
+#     #MOTOR CONTROL
+#         right_motor1.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3*1.05, PERCENT)
+#         left_motor1.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())/3, PERCENT)
+#         right_motor2.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())*1.05, PERCENT)
+#         left_motor2.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+#         conveyor.set_velocity((controller_1.axis2.position())*0.9,PERCENT)
+#         right_motor1.spin(FORWARD)
+#         left_motor1.spin(FORWARD)
+#         right_motor2.spin(FORWARD)
+#         left_motor2.spin(FORWARD)
+#         conveyor.spin(FORWARD)
+
+#         wait(5, MSEC)
+
+
+# # create competition instance
+# comp = Competition(user_control, autonomous)
+
+# actions to do when the program starts
+brain.screen.clear_screen()
