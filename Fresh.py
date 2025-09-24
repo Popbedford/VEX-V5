@@ -4,10 +4,10 @@ brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
 conveyor = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
-right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True) 
-left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
-right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
-left_motor_rear = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False) 
+right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, False) 
+left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, True) #port 10 connect to the left, port 9 connect to the right
+right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, False) 
+left_motor_rear = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True) 
 push_motor = Pneumatics(brain.three_wire_port.a)
 
 
@@ -37,6 +37,7 @@ def left(degree):
     left_motor_rear.spin_for(REVERSE,degree,TURNS,wait=True)
 
 def autonomous():
+    pass
     
 
 
@@ -44,14 +45,14 @@ def user_control():
     while True:
 
     #MOTOR CONTROL
-        right_motor1.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3, PERCENT)
-        left_motor1.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())/3, PERCENT)
-        right_motor2.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
-        left_motor2.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
-        right_motor1.spin(FORWARD)
-        left_motor1.spin(FORWARD)
-        right_motor2.spin(FORWARD)
-        left_motor2.spin(FORWARD)
+        right_motor_front.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3, PERCENT)
+        left_motor_front.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())/3, PERCENT)
+        right_motor_rear.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
+        left_motor_rear.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        right_motor_front.spin(FORWARD)
+        left_motor_front.spin(FORWARD)
+        right_motor_rear.spin(FORWARD)
+        left_motor_rear.spin(FORWARD)
 
         wait(5, MSEC)
 
