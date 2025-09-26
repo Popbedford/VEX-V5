@@ -7,8 +7,9 @@ conveyor = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True)  #conveyor belt conn
 right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, False) 
 left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, True) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, False) 
-left_motor_rear = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True) 
+left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True) 
 push_motor = Pneumatics(brain.three_wire_port.a)
+colour_sensor = Optical(Ports.PORT1)
 
 
 def foward(length):
@@ -36,24 +37,35 @@ def left(degree):
     right_motor_rear.spin_for(FORWARD,degree,TURNS,wait=False)
     left_motor_rear.spin_for(REVERSE,degree,TURNS,wait=True)
 
+def CheckColour():
+    brain.screen.clear_screen()
+    if colour_sensor.is_near_object():
+        if colour_sensor.color() == Color.BLUE:
+            brain.screen.print("blue")
+        else:
+            brain.screen.print("red")
+        
+        # Only detect colors if saturation is high enough  
+
 def autonomous():
     pass
-    
-
-
 def user_control():
+    brain.screen.clear_screen()
+    controller_1.buttonA.pressed(CheckColour)
     while True:
 
     #MOTOR CONTROL
-        right_motor_front.set_velocity((controller_1.axis3.position() - controller_1.axis4.position())/3, PERCENT)
-        left_motor_front.set_velocity((controller_1.axis3.position() + controller_1.axis4.position())/3, PERCENT)
-        right_motor_rear.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
-        left_motor_rear.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        right_motor_front.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        left_motor_front.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
+        right_motor_rear.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        left_motor_rear.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
         right_motor_front.spin(FORWARD)
         left_motor_front.spin(FORWARD)
         right_motor_rear.spin(FORWARD)
         left_motor_rear.spin(FORWARD)
-
+        
+        
+        
         wait(5, MSEC)
 
 
