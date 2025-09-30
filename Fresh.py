@@ -9,7 +9,8 @@ left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, True) #port 10 con
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, False) 
 left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True) 
 push_motor = Pneumatics(brain.three_wire_port.a)
-colour_sensor = Optical(Ports.PORT1)
+colour_sensor1 = Optical(Ports.PORT1)
+colour_sensor2 = Optical(Ports.PORT20)
 
 
 def foward(length):
@@ -39,14 +40,19 @@ def left(degree):
 
 def CheckColour():
     brain.screen.clear_screen()
-    if colour_sensor.is_near_object():
-        if colour_sensor.color() == Color.BLUE:
-            brain.screen.print("blue")
+    if colour_sensor1.is_near_object():
+        if colour_sensor1.color() == Color.BLUE or colour_sensor1.color() == Color.GREEN:
+            right_motor_front.spin(FORWARD)
         else:
             brain.screen.print("red")
-        
+    if colour_sensor2.is_near_object():
+        if colour_sensor2.color() == Color.BLUE or colour_sensor2.color() == Color.GREEN:
+            right_motor_front.spin(REVERSE)
+        else:
+            brain.screen.print("red")    
         # Only detect colors if saturation is high enough  
-
+def pneumaPUSH():
+    pass
 def autonomous():
     pass
 def user_control():
@@ -74,3 +80,4 @@ comp = Competition(user_control, autonomous)
 
 # actions to do when the program starts
 brain.screen.clear_screen()
+user_control()
