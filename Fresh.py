@@ -3,14 +3,14 @@ from vex import *
 brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
-conveyor = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
+conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
+spindle = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
 right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, False) 
 left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, True) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, False) 
 left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True) 
 push_motor = Pneumatics(brain.three_wire_port.a)
-colour_sensor1 = Optical(Ports.PORT1)
-colour_sensor2 = Optical(Ports.PORT20)
+colour_sensor = Optical(Ports.PORT1)
 
 
 def foward(length):
@@ -40,24 +40,39 @@ def left(degree):
 
 def CheckColour():
     brain.screen.clear_screen()
-    if colour_sensor1.is_near_object():
-        if colour_sensor1.color() == Color.BLUE or colour_sensor1.color() == Color.GREEN:
-            right_motor_front.spin(FORWARD)
+    if colour_sensor.is_near_object():
+        if colour_sensor.color() == Color.BLUE:
+            brain.screen.print("blue")
         else:
             brain.screen.print("red")
-    if colour_sensor2.is_near_object():
-        if colour_sensor2.color() == Color.BLUE or colour_sensor2.color() == Color.GREEN:
-            right_motor_front.spin(REVERSE)
-        else:
-            brain.screen.print("red")    
-        # Only detect colors if saturation is high enough  
-def pneumaPUSH():
-    pass
+        
+        # Only detect colors if saturation is high enough
+
+def MoveConveyor():
+    if conveyor.velocity() == 0:
+        conveyor.spin(FORWARD)
+    else:
+        conveyor.stop()
+                
+def MoveSpindle():
+    if spindle.velocity() == 0:
+        spindle.spin(FORWARD)
+    else:
+        spindle.stop()
+       
+        
+
 def autonomous():
     pass
+    
+
+
 def user_control():
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(CheckColour)
+    controller_1.buttonB.pressed(MoveConveyor)
+    controller_1.buttonY.pressed(MoveSpindle)
+
     while True:
 
     #MOTOR CONTROL
@@ -80,4 +95,3 @@ comp = Competition(user_control, autonomous)
 
 # actions to do when the program starts
 brain.screen.clear_screen()
-user_control()
