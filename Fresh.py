@@ -10,7 +10,7 @@ left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, True) #port 10 con
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, False) 
 left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True) 
 push_motor = Pneumatics(brain.three_wire_port.a)
-colour_sensor = Optical(Ports.PORT1)
+colour_sensor = Optical(Ports.PORT20)
 
 
 def foward(length):
