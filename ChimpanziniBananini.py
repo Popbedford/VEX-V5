@@ -1,5 +1,5 @@
 from vex import *
-
+#dex bot
 brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
