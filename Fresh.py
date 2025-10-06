@@ -96,6 +96,7 @@ def user_control():
         left_motor_front.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
         right_motor_rear.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
         left_motor_rear.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        conveyor.set_velocity(100, PERCENT)
         right_motor_front.spin(FORWARD)
         left_motor_front.spin(FORWARD)
         right_motor_rear.spin(FORWARD)
