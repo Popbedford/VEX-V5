@@ -4,7 +4,6 @@ brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
 conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
-spindle = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
 right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True) 
 left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
@@ -65,7 +64,10 @@ def MoveConveyor():
         conveyor.spin(FORWARD)
     else:
         conveyor.stop()
-                
+
+def push():
+    push_motor.open()
+    wait(1, SECONDS)            
 
        
         
@@ -84,7 +86,8 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
 def user_control():
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(CheckColour)
-    
+    controller_1.buttonB.pressed(push)
+    controller_1.buttonR1.pressed(MoveConveyor)
 
     while True:
 
