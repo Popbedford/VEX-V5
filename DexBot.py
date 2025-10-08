@@ -3,7 +3,7 @@ from vex import *
 brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
-conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #conveyor belt connect to port 1
+conveyor = Motor(Ports.PORT1, GearSetting.RATIO_18_1, True)  #conveyor belt connect to port 1
 right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, False) 
 left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, True) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, False) 
@@ -13,13 +13,13 @@ push_motor = Pneumatics(brain.three_wire_port.a)
 colour_sensor = Optical(Ports.PORT20)
 
 def foward(length):
-    
-    right_motor_front.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
+    length = length / 12.5
+    right_motor_front.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 12.5 inches
     left_motor_front.spin_for(FORWARD,length,TURNS,wait=False)
-    right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
+    right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  
     left_motor_rear.spin_for(FORWARD,length,TURNS,wait=True)
 def backward(length):
-    length = length / 13.5
+    length = length / 12.5
     right_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     left_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     right_motor_rear.spin_for(REVERSE,length,TURNS,wait=False)
@@ -70,7 +70,12 @@ def push():
     wait(1, SECONDS)            
 
        
-        
+def TestAutonomous():
+    right_motor_front.set_velocity(67, PERCENT)
+    left_motor_front.set_velocity(67, PERCENT)
+    right_motor_rear.set_velocity(67, PERCENT)
+    left_motor_rear.set_velocity(67, PERCENT)
+    foward(12.5)
 
 def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     right_motor_front.set_velocity(67, PERCENT)
@@ -78,6 +83,9 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     right_motor_rear.set_velocity(67, PERCENT)
     left_motor_rear.set_velocity(67, PERCENT)
     foward(45/11)
+    wait(2, SECONDS)
+    MoveConveyor()
+    wait(2,SECONDS)
     left(1.3)
     AUTONOMOUSCHECKCOLOUR()
     
