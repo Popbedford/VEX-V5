@@ -9,8 +9,11 @@ left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False) #port 10 co
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
 left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, False) 
 Newmotor = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
-push_motor = Pneumatics(brain.three_wire_port.a)
+push_motor1 = Pneumatics(brain.three_wire_port.a)
+push_motor2 = Pneumatics(brain.three_wire_port.b)
 colour_sensor = Optical(Ports.PORT20)
+
+
 
 def foward(length):
     
@@ -66,8 +69,16 @@ def MoveConveyor():
         conveyor.stop()
 
 def push():
-    push_motor.open()
+    if push_motor1.value() == 0:
+        
+        push_motor1.open()
+        push_motor2.open()
+    else:
+        push_motor1.close()
+        push_motor2.close()
     wait(1, SECONDS)            
+
+
 
        
         
