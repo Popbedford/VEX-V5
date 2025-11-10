@@ -12,10 +12,10 @@
 from vex import *
 controller=Controller()
 brain = Brain()
-left_motor_front = Motor(Ports.PORT18,GearSetting.RATIO_18_1,False)
-left_motor_rear = Motor(Ports.PORT17,GearSetting.RATIO_18_1,False)
-right_motor_front = Motor(Ports.PORT20,GearSetting.RATIO_18_1,True)
-right_motor_rear = Motor(Ports.PORT19,GearSetting.RATIO_18_1,True)
+left_motor_front = Motor(Ports.PORT18,GearSetting.RATIO_18_1,True)
+left_motor_rear = Motor(Ports.PORT17,GearSetting.RATIO_18_1,True)
+right_motor_front = Motor(Ports.PORT20,GearSetting.RATIO_18_1,False)
+right_motor_rear = Motor(Ports.PORT19,GearSetting.RATIO_18_1,False)
 left_motors = MotorGroup(left_motor_front, left_motor_rear)
 right_motors = MotorGroup(right_motor_front, right_motor_rear)
 
