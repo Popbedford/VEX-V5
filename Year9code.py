@@ -8,6 +8,7 @@
 # ---------------------------------------------------------------------------- #
 
 # Library imports
+# Library imports
 from vex import *
 controller=Controller()
 brain = Brain()
@@ -35,6 +36,7 @@ def user_control():
         x=controller.axis2.position()
         drivetrain.set_drive_velocity(x, PERCENT)
         brain.screen.print(x)
+        drivetrain.set_turn_velocity(controller.axis1.position(), PERCENT)
         
 
 # create competition instance
@@ -45,3 +47,4 @@ brain.screen.print("hello")
 #
 controller.axis1.changed(axis_changed)
 drivetrain.drive(FORWARD)
+drivetrain.turn(RIGHT)
