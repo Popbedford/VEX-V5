@@ -70,7 +70,6 @@ def MoveConveyor():
 
 def push():
     if push_motor1.value() == 0:
-        
         push_motor1.open()
         push_motor2.open()
     else:
@@ -97,9 +96,8 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
 def user_control():
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(CheckColour)
-    controller_1.buttonB.pressed(push)
-    controller_1.buttonR1.pressed(MoveConveyor)
-
+    controller_1.buttonB.pressed(MoveConveyor)
+    controller_1.buttonR1.pressed(push)
     while True:
 
     #MOTOR CONTROL
