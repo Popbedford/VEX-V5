@@ -101,6 +101,9 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
 
 
 def user_control():
+    Conveyor.set_velocity(50,PERCENT)
+    Spindle1.set_velocity(100,PERCENT)
+    Spindle2.set_velocity(100,PERCENT)
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(MoveSpindle)
     controller_1.buttonB.pressed(MoveConveyor)
