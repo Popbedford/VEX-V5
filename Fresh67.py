@@ -8,7 +8,8 @@ right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True)
 left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
 left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, False) 
-Spindle = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
+Spindle1 = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
+Spindle2 = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False)
 push_motor1 = Pneumatics(brain.three_wire_port.a)
 push_motor2 = Pneumatics(brain.three_wire_port.b)
 colour_sensor = Optical(Ports.PORT20)
@@ -78,10 +79,12 @@ def Push():
     wait(1, SECONDS)            
 
 def MoveSpindle():
-    if Spindle.velocity() == 0:
-        Spindle.spin(FORWARD)
+    if Spindle1.velocity() == 0:
+        Spindle1.spin(FORWARD)
+        Spindle2.spin(FORWARD)
     else:
-        Spindle.stop()
+        Spindle1.stop()
+        Spindle2.stop()
 
        
         
