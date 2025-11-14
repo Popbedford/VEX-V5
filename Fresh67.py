@@ -15,15 +15,15 @@ push_motor2 = Pneumatics(brain.three_wire_port.b)
 colour_sensor = Optical(Ports.PORT20)
 
 
-
+#input should be in inches, then will convert into turns
 def foward(length):
-    
-    right_motor_front.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
+    length = length/8.6
+    right_motor_front.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 8.6 inches
     left_motor_front.spin_for(FORWARD,length,TURNS,wait=False)
-    right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
+    right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 8.6 inches
     left_motor_rear.spin_for(FORWARD,length,TURNS,wait=True)
 def backward(length):
-    length = length / 13.5
+    length = length / 8.6
     right_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     left_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     right_motor_rear.spin_for(REVERSE,length,TURNS,wait=False)
@@ -81,10 +81,10 @@ def Push():
 def MoveSpindle():
     if Spindle1.velocity() == 0:
         Spindle1.spin(FORWARD)
-        Spindle2.spin(FORWARD)
+        
     else:
         Spindle1.stop()
-        Spindle2.stop()
+        
 
        
         
@@ -94,6 +94,10 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     left_motor_front.set_velocity(67, PERCENT)
     right_motor_rear.set_velocity(67, PERCENT)
     left_motor_rear.set_velocity(67, PERCENT)
+    Conveyor.set_velocity(50,PERCENT)
+    Spindle1.set_velocity(75,PERCENT)
+    MoveConveyor()
+    MoveSpindle()
     foward(45/11)
     left(1.3)
     AUTONOMOUSCHECKCOLOUR()
@@ -102,8 +106,7 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
 
 def user_control():
     Conveyor.set_velocity(50,PERCENT)
-    Spindle1.set_velocity(100,PERCENT)
-    Spindle2.set_velocity(100,PERCENT)
+    Spindle1.set_velocity(75,PERCENT)
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(MoveSpindle)
     controller_1.buttonB.pressed(MoveConveyor)
