@@ -4,10 +4,10 @@ brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
 Conveyor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True)  #Conveyor belt connect to port 1
-right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_18_1, True) 
-left_motor_front = Motor(Ports.PORT18, GearSetting.RATIO_18_1, False) #port 10 connect to the left, port 9 connect to the right
-right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_18_1, True) 
-left_motor_rear = Motor(Ports.PORT16, GearSetting.RATIO_18_1, False) 
+right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
+left_motor_front = Motor(Ports.PORT18, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
+right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_6_1, True) 
+left_motor_rear = Motor(Ports.PORT16, GearSetting.RATIO_6_1, False) 
 Spindle1 = Motor(Ports.PORT15, GearSetting.RATIO_6_1, True) 
 push_motor1 = Pneumatics(brain.three_wire_port.g)
 push_motor2 = Pneumatics(brain.three_wire_port.h)
@@ -106,7 +106,7 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     Spindle1.set_velocity(75,PERCENT)
     foward(25)
     wait(1, SECONDS)
-    left(6)
+    left(6.7)
     wait(1, SECONDS)
     MoveSpindle()
     wait(1, SECONDS)
