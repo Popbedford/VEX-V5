@@ -3,7 +3,7 @@ from vex import *
 brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
-Conveyor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True)  #Conveyor belt connect to port 1
+Conveyor = Motor(Ports.PORT20, GearSetting.RATIO_18_1, True)  #Conveyor belt connect to port 1
 right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
 left_motor_front = Motor(Ports.PORT18, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_6_1, True) 
@@ -98,32 +98,32 @@ def MoveSpindle():
         
 
 def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
-    right_motor_front.set_velocity(89, PERCENT)
-    left_motor_front.set_velocity(89, PERCENT)
-    right_motor_rear.set_velocity(89, PERCENT)
-    left_motor_rear.set_velocity(89, PERCENT)
-    Conveyor.set_velocity(20,PERCENT)
-    Spindle1.set_velocity(75,PERCENT)
-    foward(25)
-    wait(1, SECONDS)
-    left(6.7)
-    wait(1, SECONDS)
+    right_motor_front.set_velocity(45, PERCENT)
+    left_motor_front.set_velocity(45, PERCENT)
+    right_motor_rear.set_velocity(45, PERCENT)
+    left_motor_rear.set_velocity(45, PERCENT)
+    Conveyor.set_velocity(50,PERCENT)
+    Spindle1.set_velocity(82,PERCENT)
     MoveSpindle()
     wait(1, SECONDS)
-    MoveConveyor()
-    wait(0.5, SECONDS)
+    foward(32)
+    wait(1, SECONDS)
+    Conveyor.spin_for(FORWARD,0.25,SECONDS)
+    # backward(10.5)
+    # wait(1, SECONDS)
+    # left(25)
+    # wait(1, SECONDS)
     #AUTONOMOUSCHECKCOLOUR()
     
 
 
 def user_control():
-    Conveyor.set_velocity(20,PERCENT)
+    Conveyor.set_velocity(50,PERCENT)
     Spindle1.set_velocity(75,PERCENT)
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(MoveSpindle)
     controller_1.buttonB.pressed(MoveConveyor)
-    controller_1.buttonL1.pressed(Open)
-    controller_1.buttonR1.pressed(Close)
+    controller_1.buttonR1.pressed(Push)
     
     while True:
 
@@ -132,7 +132,7 @@ def user_control():
         left_motor_front.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
         right_motor_rear.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
         left_motor_rear.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
-        Conveyor.set_velocity(100, PERCENT)
+        Conveyor.set_velocity(50, PERCENT)
         right_motor_front.spin(FORWARD)
         left_motor_front.spin(FORWARD)
         right_motor_rear.spin(FORWARD)
