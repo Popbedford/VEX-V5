@@ -69,18 +69,21 @@ def MoveConveyor():
         Conveyor.stop()
 
 def Push1():
-    if push_motor1.value() == 1:
+    if push_motor1.value() == 0:
         push_motor1.open()
     else:
         push_motor2.close()
         
     wait(1, SECONDS)
 
-def Push2():
-    if push_motor2.value() == 1:
-        push_motor2.open()
-    else:
-        push_motor2.close()
+    
+def Open():
+    push_motor1.open()
+    push_motor2.close()
+
+def Close():
+    push_motor1.close()
+    push_motor2.open()
                 
 
 def MoveSpindle():
@@ -95,22 +98,21 @@ def MoveSpindle():
         
 
 def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
-    right_motor_front.set_velocity(67, PERCENT)
-    left_motor_front.set_velocity(67, PERCENT)
-    right_motor_rear.set_velocity(67, PERCENT)
-    left_motor_rear.set_velocity(67, PERCENT)
+    right_motor_front.set_velocity(89, PERCENT)
+    left_motor_front.set_velocity(89, PERCENT)
+    right_motor_rear.set_velocity(89, PERCENT)
+    left_motor_rear.set_velocity(89, PERCENT)
     Conveyor.set_velocity(50,PERCENT)
     Spindle1.set_velocity(75,PERCENT)
-    MoveConveyor()
-    wait(2, SECONDS)
     MoveSpindle()
-    wait(2, SECONDS)
+    wait(1, SECONDS)
+    MoveConveyor()
+    wait(1, SECONDS)
+    
     foward(10)
-    wait(2, SECONDS)
+    wait(1, SECONDS)
     left(96)
-    wait(2, SECONDS)
-    Push1()
-    Push2()
+    wait(1, SECONDS)
     #AUTONOMOUSCHECKCOLOUR()
     
 
@@ -121,8 +123,8 @@ def user_control():
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(MoveSpindle)
     controller_1.buttonB.pressed(MoveConveyor)
-    controller_1.buttonR1.pressed(Push1)
-    controller_1.buttonR1.pressed(Push2)
+    controller_1.buttonL1.pressed(Open)
+    controller_1.buttonR1.pressed(Close)
     
     while True:
 
