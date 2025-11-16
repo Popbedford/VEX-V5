@@ -68,13 +68,13 @@ def MoveConveyor():
     else:
         Conveyor.stop()
 
-def Push1():
+def Push():
     if push_motor1.value() == 0:
-        push_motor1.open()
+        Open()
     else:
-        push_motor2.close()
+        Close()
         
-    wait(1, SECONDS)
+    
 
     
 def Open():
@@ -102,17 +102,16 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     left_motor_front.set_velocity(89, PERCENT)
     right_motor_rear.set_velocity(89, PERCENT)
     left_motor_rear.set_velocity(89, PERCENT)
-    Conveyor.set_velocity(50,PERCENT)
+    Conveyor.set_velocity(20,PERCENT)
     Spindle1.set_velocity(75,PERCENT)
+    foward(25)
+    wait(1, SECONDS)
+    left(6)
+    wait(1, SECONDS)
     MoveSpindle()
     wait(1, SECONDS)
     MoveConveyor()
-    wait(1, SECONDS)
-    
-    foward(10)
-    wait(1, SECONDS)
-    left(96)
-    wait(1, SECONDS)
+    wait(0.5, SECONDS)
     #AUTONOMOUSCHECKCOLOUR()
     
 
