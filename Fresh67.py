@@ -3,16 +3,15 @@ from vex import *
 brain = Brain()
 
 controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
-Conveyor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)  #Conveyor belt connect to port 1
-right_motor_front = Motor(Ports.PORT9, GearSetting.RATIO_6_1, True) 
-left_motor_front = Motor(Ports.PORT10, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
-right_motor_rear = Motor(Ports.PORT12, GearSetting.RATIO_6_1, True) 
-left_motor_rear = Motor(Ports.PORT13, GearSetting.RATIO_6_1, False) 
-Spindle1 = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
-Spindle2 = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False)
-push_motor1 = Pneumatics(brain.three_wire_port.a)
-push_motor2 = Pneumatics(brain.three_wire_port.b)
-colour_sensor = Optical(Ports.PORT20)
+Conveyor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True)  #Conveyor belt connect to port 1
+right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_18_1, True) 
+left_motor_front = Motor(Ports.PORT18, GearSetting.RATIO_18_1, False) #port 10 connect to the left, port 9 connect to the right
+right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_18_1, True) 
+left_motor_rear = Motor(Ports.PORT16, GearSetting.RATIO_18_1, False) 
+Spindle1 = Motor(Ports.PORT15, GearSetting.RATIO_6_1, True) 
+push_motor1 = Pneumatics(brain.three_wire_port.g)
+push_motor2 = Pneumatics(brain.three_wire_port.h)
+#colour_sensor = Optical(Ports.PORT20)
 
 
 #input should be in inches, then will convert into turns
@@ -41,27 +40,27 @@ def left(degree):
     right_motor_rear.spin_for(FORWARD,degree,TURNS,wait=False)
     left_motor_rear.spin_for(REVERSE,degree,TURNS,wait=True)
 
-def CheckColour():
-    brain.screen.clear_screen()
+# def CheckColour():
+#     brain.screen.clear_screen()
     
-    if colour_sensor.is_near_object():
-        if colour_sensor.color() == Color.BLUE:
+#     if colour_sensor.is_near_object():
+#         if colour_sensor.color() == Color.BLUE:
             
-            brain.screen.print("blue")
-        else:
+#             brain.screen.print("blue")
+#         else:
             
-            brain.screen.print("red")
+#             brain.screen.print("red")
 
-def AUTONOMOUSCHECKCOLOUR():
-    brain.screen.clear_screen()
+# def AUTONOMOUSCHECKCOLOUR():
+#     brain.screen.clear_screen()
     
-    if colour_sensor.is_near_object():
-        if colour_sensor.color() == Color.BLUE:
-            right_motor_front.spin(FORWARD)
-            brain.screen.print("blue")
-        else:
-            left_motor_front.spin(FORWARD)
-            brain.screen.print("red")
+#     if colour_sensor.is_near_object():
+#         if colour_sensor.color() == Color.BLUE:
+#             right_motor_front.spin(FORWARD)
+#             brain.screen.print("blue")
+#         else:
+#             left_motor_front.spin(FORWARD)
+#             brain.screen.print("red")
         # Only detect colors if saturation is high enough
 def MoveConveyor():
     if Conveyor.velocity() == 0:
@@ -69,14 +68,20 @@ def MoveConveyor():
     else:
         Conveyor.stop()
 
-def Push():
-    if push_motor1.value() == 0:
+def Push1():
+    if push_motor1.value() == 1:
         push_motor1.open()
+    else:
+        push_motor2.close()
+        
+    wait(1, SECONDS)
+
+def Push2():
+    if push_motor2.value() == 1:
         push_motor2.open()
     else:
-        push_motor1.close()
         push_motor2.close()
-    wait(1, SECONDS)            
+                
 
 def MoveSpindle():
     if Spindle1.velocity() == 0:
@@ -97,20 +102,27 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     Conveyor.set_velocity(50,PERCENT)
     Spindle1.set_velocity(75,PERCENT)
     MoveConveyor()
+    wait(2, SECONDS)
     MoveSpindle()
-    foward(45/11)
-    left(1.3)
-    AUTONOMOUSCHECKCOLOUR()
+    wait(2, SECONDS)
+    foward(10)
+    wait(2, SECONDS)
+    left(96)
+    wait(2, SECONDS)
+    Push1()
+    Push2()
+    #AUTONOMOUSCHECKCOLOUR()
     
 
 
 def user_control():
-    Conveyor.set_velocity(50,PERCENT)
+    Conveyor.set_velocity(20,PERCENT)
     Spindle1.set_velocity(75,PERCENT)
     brain.screen.clear_screen()
     controller_1.buttonA.pressed(MoveSpindle)
     controller_1.buttonB.pressed(MoveConveyor)
-    controller_1.buttonR1.pressed(Push)
+    controller_1.buttonR1.pressed(Push1)
+    controller_1.buttonR1.pressed(Push2)
     
     while True:
 
@@ -124,7 +136,6 @@ def user_control():
         left_motor_front.spin(FORWARD)
         right_motor_rear.spin(FORWARD)
         left_motor_rear.spin(FORWARD)
-        
         
         
         wait(5, MSEC)
