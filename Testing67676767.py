@@ -88,7 +88,7 @@ def autonomous():
     right_motor_rear.set_velocity(45, PERCENT)
     left_motor_rear.set_velocity(45, PERCENT)
     TestTrain.drive_for(FORWARD,30,INCHES)
-    TestTrain.turn_for(90,DEGREES)
+    TestTrain.turn_for(RIGHT,90,DEGREES)
     # Conveyor.set_velocity(50,PERCENT)
     # Spindle1.set_velocity(82,PERCENT)
     # MoveSpindle()
