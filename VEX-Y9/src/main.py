@@ -18,10 +18,7 @@ right_motor_rear = Motor(Ports.PORT19,GearSetting.RATIO_18_1,False)
 left_motors = MotorGroup(left_motor_front, left_motor_rear)
 right_motors = MotorGroup(right_motor_front, right_motor_rear)
 
-conveyor_motor_1=1
-conveyor_motor_2=1
-
-conveyor=MotorGroup(conveyor_motor_1,conveyor_motor_2)
+conveyor=Motor(Ports.PORT15,GearSetting.RATIO_6_1)
 
 drivetrain = DriveTrain(left_motors, right_motors, 300, 320, 320, MM, 1)
 
@@ -48,16 +45,16 @@ def user_control():
         drivetrain.set_turn_velocity(controller.axis1.position(), PERCENT)
 
         #conveyor
-#
- #       if controller.buttonL1.pressing()==True:
-  #          conveyor.spin(FORWARD)
-   #     elif controller.buttonR1.pressing()==False:
-    #        conveyor.spin(REVERSE)
-     #   else:
-      #      conveyor.stop()
+
+        if controller.buttonL1.pressing()==True:
+            conveyor.set_velocity(-50, PERCENT)
+        elif controller.buttonR1.pressing()==True:
+            conveyor.set_velocity(50, PERCENT)
+        else:
+            conveyor.set_velocity(0, PERCENT)
         
 
-# create competition instance
+# create competition instance aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 comp = Competition(user_control, autonomous)
 
 # actions to do when the program starts
@@ -66,5 +63,5 @@ brain.screen.print("hello")
 
 drivetrain.drive(FORWARD)
 drivetrain.turn(RIGHT)
-
+conveyor.spin(FORWARD)
         
