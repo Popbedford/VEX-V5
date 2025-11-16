@@ -1,49 +1,127 @@
-def advanced_color_detection():
-    while True:
-        # Check if an object is detected
-        if optical_sensor.is_near_object():
-            hue = optical_sensor.hue()
-            saturation = optical_sensor.saturation()
-            brightness = optical_sensor.brightness()
-           
-            # Only detect colors if saturation is high enough
-            if saturation > 30 and brightness > 20:
-                color_name = get_color_name(hue)
-                brain.screen.print_at("Color: {}".format(color_name), 10, 50)
-                brain.screen.print_at("Confidence: High", 10, 70)
-            else:
-                brain.screen.print_at("Color: Unclear    ", 10, 50)
-                brain.screen.print_at("Confidence: Low ", 10, 70)
-        else:
-            brain.screen.print_at("No object detected", 10, 50)
-            brain.screen.print_at("                  ", 10, 70)
+from vex import *
+
+brain = Brain()
+
+controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
+Conveyor = Motor(Ports.PORT20, GearSetting.RATIO_18_1, True)  #Conveyor belt connect to port 1
+right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_6_1, True) 
+left_motor_front = Motor(Ports.PORT18, GearSetting.RATIO_6_1, False) #port 10 connect to the left, port 9 connect to the right
+right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_6_1, True) 
+left_motor_rear = Motor(Ports.PORT16, GearSetting.RATIO_6_1, False) 
+Spindle1 = Motor(Ports.PORT15, GearSetting.RATIO_6_1, True) 
+push_motor1 = Pneumatics(brain.three_wire_port.g)
+push_motor2 = Pneumatics(brain.three_wire_port.h)
+motor_group_left = MotorGroup(left_motor_front,left_motor_rear)
+motor_group_right = MotorGroup(right_motor_front,left_motor_front)
+TestTrain = DriveTrain(motor_group_left,motor_group_right,220,375,295)
+#input should be in inches, then will convert into turns
+def foward(length):
+    TestTrain.drive_for(FORWARD,length,INCHES)
+def backward(length):
+    TestTrain.drive_for(backward,length,INCHES)
+def right(degree):
+    TestTrain.turn_for(degree,DEGREES)
+def left(degree):
+    TestTrain.turn_for(degree,DEGREES)
+
+# def CheckColour():
+#     brain.screen.clear_screen()
+    
+#     if colour_sensor.is_near_object():
+#         if colour_sensor.color() == Color.BLUE:
+            
+#             brain.screen.print("blue")
+#         else:
+            
+#             brain.screen.print("red")
+
+# def AUTONOMOUSCHECKCOLOUR():
+#     brain.screen.clear_screen()
+    
+#     if colour_sensor.is_near_object():
+#         if colour_sensor.color() == Color.BLUE:
+#             right_motor_front.spin(FORWARD)
+#             brain.screen.print("blue")
+#         else:
+#             left_motor_front.spin(FORWARD)
+#             brain.screen.print("red")
+        # Only detect colors if saturation is high enough
+def MoveConveyor():
+    if Conveyor.velocity() == 0:
+        Conveyor.spin(FORWARD)
+    else:
+        Conveyor.stop()
+
+def Push():
+    if push_motor1.value() == 0:
+        Open()
+    else:
+        Close()
+        
+    
+
+    
+def Open():
+    push_motor1.open()
+    push_motor2.close()
+
+def Close():
+    push_motor1.close()
+    push_motor2.open()
+                
+
+def MoveSpindle():
+    if Spindle1.velocity() == 0:
+        Spindle1.spin(FORWARD)
+        
+    else:
+        Spindle1.stop()
+        
+
        
-        wait(100, MSEC)
-def object_sorting():
-    # Turn on the optical sensor LED for better detection
-    optical_sensor.set_light(LedState.ON)
-    optical_sensor.set_light_power(100, PERCENT)
-   
+        
+
+def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
+    right_motor_front.set_velocity(45, PERCENT)
+    left_motor_front.set_velocity(45, PERCENT)
+    right_motor_rear.set_velocity(45, PERCENT)
+    left_motor_rear.set_velocity(45, PERCENT)
+    Conveyor.set_velocity(50,PERCENT)
+    Spindle1.set_velocity(82,PERCENT)
+    MoveSpindle()
+    wait(1, SECONDS)
+    foward(32)
+    wait(1, SECONDS)
+    Conveyor.spin_for(FORWARD,0.25,SECONDS)
+    # backward(10.5)
+    # wait(1, SECONDS)
+    # left(25)
+    # wait(1, SECONDS)
+    #AUTONOMOUSCHECKCOLOUR()
+    
+
+
+def user_control():
+    Conveyor.set_velocity(50,PERCENT)
+    Spindle1.set_velocity(75,PERCENT)
+    brain.screen.clear_screen()
+    controller_1.buttonA.pressed(MoveSpindle)
+    controller_1.buttonB.pressed(MoveConveyor)
+    controller_1.buttonR1.pressed(Push)
+    
     while True:
-        if optical_sensor.is_near_object():
-            hue = optical_sensor.hue()
-           
-            brain.screen.print_at("Object detected!", 10, 50)
-            brain.screen.print_at("Hue: {:.1f}".format(hue), 10, 70)
-           
-            # Sort based on color
-            if 0 <= hue < 60:  # Red/Orange/Yellow
-                brain.screen.print_at("Sort to BIN A", 10, 90)
-                # Add motor code to sort to bin A
-            elif 60 <= hue < 180:  # Green
-                brain.screen.print_at("Sort to BIN B", 10, 90)
-                # Add motor code to sort to bin B
-            else:  # Blue/Purple
-                brain.screen.print_at("Sort to BIN C", 10, 90)
-                # Add motor code to sort to bin C
-        else:
-            brain.screen.print_at("Waiting for object...", 10, 50)
-            brain.screen.print_at("                     ", 10, 70)
-            brain.screen.print_at("                     ", 10, 90)
-       
-        wait(100, MSEC)
+
+    #MOTOR CONTROL
+        motor_group_left.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        motor_group_right.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
+        Conveyor.set_velocity(50, PERCENT)
+        motor_group_left.spin(FORWARD)
+        motor_group_right.spin(FORWARD)
+        wait(5, MSEC)
+
+
+# create competition instance
+comp = Competition(user_control, autonomous)
+
+# actions to do when the program starts
+brain.screen.clear_screen()
