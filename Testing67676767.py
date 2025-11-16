@@ -81,18 +81,21 @@ def MoveSpindle():
        
         
 
-def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
+def autonomous(): 
+    
     right_motor_front.set_velocity(45, PERCENT)
     left_motor_front.set_velocity(45, PERCENT)
     right_motor_rear.set_velocity(45, PERCENT)
     left_motor_rear.set_velocity(45, PERCENT)
-    Conveyor.set_velocity(50,PERCENT)
-    Spindle1.set_velocity(82,PERCENT)
-    MoveSpindle()
-    wait(1, SECONDS)
-    foward(32)
-    wait(1, SECONDS)
-    Conveyor.spin_for(FORWARD,0.25,SECONDS)
+    TestTrain.drive_for(FORWARD,30,INCHES)
+    TestTrain.turn_for(90,DEGREES)
+    # Conveyor.set_velocity(50,PERCENT)
+    # Spindle1.set_velocity(82,PERCENT)
+    # MoveSpindle()
+    # wait(1, SECONDS)
+    # foward(32)
+    # wait(1, SECONDS)
+    # Conveyor.spin_for(FORWARD,0.25,SECONDS)
     # backward(10.5)
     # wait(1, SECONDS)
     # left(25)
@@ -114,9 +117,10 @@ def user_control():
     #MOTOR CONTROL
         motor_group_left.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
         motor_group_right.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
-        Conveyor.set_velocity(50, PERCENT)
+        Conveyor.set_velocity(controller_1.axis2.position(), PERCENT)
         motor_group_left.spin(FORWARD)
         motor_group_right.spin(FORWARD)
+        Conveyor.spin(FORWARD)
         wait(5, MSEC)
 
 
