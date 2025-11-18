@@ -1,0 +1,57 @@
+# ---------------------------------------------------------------------------- #
+#                                                                              #
+# 	Module:       main.py                                                      #
+# 	Author:       yautk                                                        #
+# 	Created:      11/18/2025, 3:07:58 PM                                       #
+# 	Description:  V5 project                                                   #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+
+# Library imports
+from vex import *
+
+# Brain should be defined by default
+brain=Brain()
+controller_1 = Controller(PRIMARY)
+MotorRF = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
+MotorRR = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
+MotorLF = Motor(Ports.PORT3, GearSetting.RATIO_6_1, False)
+MotorLR = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
+LeftMotorGroup = MotorGroup(MotorLF,MotorLR)
+RightMotorGroup = MotorGroup(MotorRF,MotorRR)
+BotDriveTrain = DriveTrain(LeftMotorGroup,RightMotorGroup)
+
+def Forward(length):
+    BotDriveTrain.drive_for(FORWARD,length,INCHES)
+
+def Backward(length):
+    BotDriveTrain.drive_for(REVERSE,length,INCHES)
+
+def Right(degree):
+    BotDriveTrain.turn_for(RIGHT,90,DEGREES)
+
+def Left(degree):
+    BotDriveTrain.turn_for(LEFT,90,DEGREES)
+
+        
+def user_control():
+
+    while True:
+
+    #MOTOR CONTROL
+        LeftMotorGroup.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        RightMotorGroup.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
+        
+        LeftMotorGroup.spin(FORWARD)
+        RightMotorGroup.spin(FORWARD)
+        
+        wait(5, MSEC)
+
+
+def autonomous():
+    pass
+# create competition instance
+comp = Competition(user_control, autonomous)
+
+# actions to do when the program starts
+brain.screen.clear_screen()
