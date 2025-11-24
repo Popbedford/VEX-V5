@@ -12,7 +12,8 @@ Spindle1 = Motor(Ports.PORT15, GearSetting.RATIO_6_1, True)
 push_motor1 = Pneumatics(brain.three_wire_port.g)
 push_motor2 = Pneumatics(brain.three_wire_port.h)
 #colour_sensor = Optical(Ports.PORT20)
-
+rmg = MotorGroup(right_motor_front, right_motor_rear)
+lmg = MotorGroup(left_motor_front, left_motor_rear)
 
 #input should be in inches, then will convert into turns
 def foward(length):
@@ -98,32 +99,7 @@ def MoveSpindle():
         
 
 def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
-    right_motor_front.set_velocity(70, PERCENT)
-    left_motor_front.set_velocity(70, PERCENT)
-    right_motor_rear.set_velocity(70, PERCENT)
-    left_motor_rear.set_velocity(70, PERCENT)
-    Conveyor.set_velocity(50,PERCENT)
-    Spindle1.set_velocity(100,PERCENT)
-    MoveSpindle()
-    wait(1, SECONDS)
-    foward(32)
-    wait(1, SECONDS)
-    Conveyor.spin_for(FORWARD,0.5,SECONDS)
-    wait(1, SECONDS)
-    backward(7.3)
-    wait(1,SECONDS)
-    left(1.49)
-    wait(0.5,SECONDS)
-    foward(28.5)
-    wait(1,SECONDS)
-    left(1.49)
-    wait(0.5,SECONDS)
-    Conveyor.spin_for(FORWARD,3,SECONDS)
-    # backward(10.5)
-    # wait(1, SECONDS)
-    # left(25)
-    # wait(1, SECONDS)
-    #AUTONOMOUSCHECKCOLOUR()
+    Autodrive = DriveTrain(rmg, lmg, 219.440247, 380, 385, units=MM, externalGearRatio=1.0)
     
 
 
@@ -135,15 +111,11 @@ def user_control():
     while True:
 
     #MOTOR CONTROL
-        right_motor_front.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
-        left_motor_front.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
-        right_motor_rear.set_velocity((controller_1.axis3.position() - controller_1.axis4.position()), PERCENT)
-        left_motor_rear.set_velocity((controller_1.axis3.position() + controller_1.axis4.position()), PERCENT)
+        rmg.set_velocity(controller_1.axis3.position(), PERCENT)
+        lmg.set_velocity(controller_1.axis4.position(), PERCENT)
         Conveyor.set_velocity(controller_1.axis2.position())
-        right_motor_front.spin(FORWARD)
-        left_motor_front.spin(FORWARD)
-        right_motor_rear.spin(FORWARD)
-        left_motor_rear.spin(FORWARD)
+        rmg.spin(FORWARD)
+        lmg.spin(FORWARD)
         Conveyor.spin(FORWARD)
         wait(5, MSEC)
 
