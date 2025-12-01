@@ -13,6 +13,7 @@ left_motor_middle = Motor(Ports.PORT14, GearSetting.RATIO_18_1, False)
 Spindle1 = Motor(Ports.PORT15, GearSetting.RATIO_6_1, True) 
 push_motor1 = Pneumatics(brain.three_wire_port.g)
 push_motor2 = Pneumatics(brain.three_wire_port.h)
+colour_sensor = Optical(Ports.PORT4)
 #colour_sensor = Optical(Ports.PORT20)
 rmg = MotorGroup(right_motor_front, right_motor_middle, right_motor_rear)
 lmg = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)
@@ -41,17 +42,16 @@ def left(degree):
             
 #             brain.screen.print("red")
 
-# def AUTONOMOUSCHECKCOLOUR():
-#     brain.screen.clear_screen()
+def AUTONOMOUSCHECKCOLOUR():
+    brain.screen.clear_screen()
     
-#     if colour_sensor.is_near_object():
-#         if colour_sensor.color() == Color.BLUE:
-#             right_motor_front.spin(FORWARD)
-#             brain.screen.print("blue")
-#         else:
-#             left_motor_front.spin(FORWARD)
-#             brain.screen.print("red")
-        # Only detect colors if saturation is high enough
+    if colour_sensor.is_near_object():
+        if colour_sensor.color() == Color.BLUE:
+            right_motor_front.spin(FORWARD)
+            brain.screen.print("blue")
+        else:
+            left_motor_front.spin(FORWARD)
+            brain.screen.print("red")
 def MoveConveyor():
     if Conveyor.velocity() == 0:
         Conveyor.spin(FORWARD)
@@ -92,7 +92,6 @@ def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
     MoveSpindle()
     wait(1,SECONDS)
     left(90.0)
-    
     
 
 
