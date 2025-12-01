@@ -19,16 +19,16 @@ lmg = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)
 Autodrive = DriveTrain(rmg, lmg, 219.440247, 380, 385, units=MM, externalGearRatio=1.0)
 #input should be in inches, then will convert into turns
 def foward(length):
-    Autodrive.drive_for(FORWARD, 24, INCHES)
+    Autodrive.drive_for(FORWARD, length, INCHES)
     
 def backward(length):
-    Autodrive.drive_for(FORWARD, -24, INCHES)
+    Autodrive.drive_for(FORWARD, length, INCHES)
 
 def right(degree):
-    Autodrive.turn(RIGHT, 90.0, VelocityUnits.DPS)
+    Autodrive.turn(RIGHT, degree, VelocityUnits.DPS)
 
 def left(degree):
-    Autodrive.turn(LEFT, 90.0, VelocityUnits.DPS)
+    Autodrive.turn(LEFT, degree, VelocityUnits.DPS)
 
 # def CheckColour():
 #     brain.screen.clear_screen()
@@ -88,7 +88,11 @@ def MoveSpindle():
         
 
 def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
-    Autodrive.drive(FORWARD, 300, RPM)
+    foward(10)
+    MoveSpindle()
+    wait(1,SECONDS)
+    left(90.0)
+    
     
 
 
