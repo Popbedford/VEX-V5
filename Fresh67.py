@@ -8,38 +8,27 @@ right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_18_1, True)
 left_motor_front = Motor(Ports.PORT18, GearSetting.RATIO_18_1, False) #port 10 connect to the left, port 9 connect to the right
 right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_18_1, True) 
 left_motor_rear = Motor(Ports.PORT16, GearSetting.RATIO_18_1, False) 
+right_motor_middle = Motor(Ports.PORT15, GearSetting.RATIO_18_1, False) 
+left_motor_middle = Motor(Ports.PORT14, GearSetting.RATIO_18_1, False) 
 Spindle1 = Motor(Ports.PORT15, GearSetting.RATIO_6_1, True) 
 push_motor1 = Pneumatics(brain.three_wire_port.g)
 push_motor2 = Pneumatics(brain.three_wire_port.h)
 #colour_sensor = Optical(Ports.PORT20)
-rmg = MotorGroup(right_motor_front, right_motor_rear)
-lmg = MotorGroup(left_motor_front, left_motor_rear)
-
+rmg = MotorGroup(right_motor_front, right_motor_middle, right_motor_rear)
+lmg = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)
+Autodrive = DriveTrain(rmg, lmg, 219.440247, 380, 385, units=MM, externalGearRatio=1.0)
 #input should be in inches, then will convert into turns
 def foward(length):
-    length = length/8.6
-    right_motor_front.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 8.6 inches
-    left_motor_front.spin_for(FORWARD,length,TURNS,wait=False)
-    right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 8.6 inches
-    left_motor_rear.spin_for(FORWARD,length,TURNS,wait=True)
+    Autodrive.drive_for(FORWARD, 24, INCHES)
+    
 def backward(length):
-    length = length / 8.6
-    right_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
-    left_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
-    right_motor_rear.spin_for(REVERSE,length,TURNS,wait=False)
-    left_motor_rear.spin_for(REVERSE,length,TURNS,wait=True)
+    Autodrive.drive_for(FORWARD, -24, INCHES)
+
 def right(degree):
-    
-    left_motor_front.spin_for(FORWARD,degree,TURNS,wait=False) 
-    right_motor_front.spin_for(REVERSE,degree,TURNS,wait=False) #0.96 spin will turn 90 degrees
-    left_motor_rear.spin_for(FORWARD,degree,TURNS,wait=False) 
-    right_motor_rear.spin_for(REVERSE,degree,TURNS,wait=True)
+    Autodrive.turn(RIGHT, 90.0, VelocityUnits.DPS)
+
 def left(degree):
-    
-    right_motor_front.spin_for(FORWARD,degree,TURNS,wait=False)
-    left_motor_front.spin_for(REVERSE,degree,TURNS,wait=False)
-    right_motor_rear.spin_for(FORWARD,degree,TURNS,wait=False)
-    left_motor_rear.spin_for(REVERSE,degree,TURNS,wait=True)
+    Autodrive.turn(LEFT, 90.0, VelocityUnits.DPS)
 
 # def CheckColour():
 #     brain.screen.clear_screen()
@@ -99,7 +88,7 @@ def MoveSpindle():
         
 
 def autonomous(): #1 foward = 11 inches, 1 turn is around 53 degrees
-    Autodrive = DriveTrain(rmg, lmg, 219.440247, 380, 385, units=MM, externalGearRatio=1.0)
+    Autodrive.drive(FORWARD, 300, RPM)
     
 
 
