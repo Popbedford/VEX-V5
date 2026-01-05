@@ -11,9 +11,9 @@
 from vex import *
 controller=Controller()
 brain = Brain()
-left_motor_front = Motor(Ports.PORT18,GearSetting.RATIO_18_1,True)
+left_motor_front = Motor(Ports.PORT18,GearSetting.RATIO_18_1,False)
 left_motor_rear = Motor(Ports.PORT17,GearSetting.RATIO_18_1,True)
-right_motor_front = Motor(Ports.PORT20,GearSetting.RATIO_18_1,False)
+right_motor_front = Motor(Ports.PORT20,GearSetting.RATIO_18_1,True)
 right_motor_rear = Motor(Ports.PORT19,GearSetting.RATIO_18_1,False)
 left_motors = MotorGroup(left_motor_front, left_motor_rear)
 right_motors = MotorGroup(right_motor_front, right_motor_rear)
@@ -39,10 +39,10 @@ def user_control():
     brain.screen.print("driver control")
     # place driver control in this while loop
     while True:
-        x=controller.axis2.position()
+        x=controller.axis1.position()
         drivetrain.set_drive_velocity(x, PERCENT)
         brain.screen.print(x)
-        drivetrain.set_turn_velocity(controller.axis1.position(), PERCENT)
+        drivetrain.set_turn_velocity(controller.axis2.position(), PERCENT)
 
         #conveyor
 
@@ -64,4 +64,6 @@ brain.screen.print("hello")
 drivetrain.drive(FORWARD)
 drivetrain.turn(RIGHT)
 conveyor.spin(FORWARD)
-        
+
+brain.screen.print("I Am The Cadasio Conveyer Bot 2000 With The Low Taper Fade Amd the 67 Trim Fro Tescos")
+brain.screen.print("My Creators Were Gene Baker, Nikhil Dasgupta And Lesser So Ilyas Hosein And Least of All Ethan Lad")
