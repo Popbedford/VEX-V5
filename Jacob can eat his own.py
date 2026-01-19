@@ -168,15 +168,19 @@ def MoveSpindlebackwards2():
 
 # autonomous not working yet
 def autonomous():
-    foward(12.5)
+    '''trial and error abc and qrs
+    abc is the length needed to move 2 squares
+    qrs is the length needed to turn 90 degrees
+            '''
+    foward(abc)
     wait(500, MSEC)
-    backward(12.5)
+    backward(abc/2)
     wait(500, MSEC)
-    right(5)
-    backward(12.5)
+    right(qrs)
+    backward(abc/2)
     wait(500, MSEC)
-    right(5)
-    backward(2)
+    right(qrs)
+    backward(abc/2)
     wait(500, MSEC)
     MoveSpindle()
 
