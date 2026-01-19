@@ -1,28 +1,45 @@
-# ---------------------------------------------------------------------------- #
-#                                                                              #
-# 	Module:       main.py                                                      #
-# 	Author:       yautk                                                        #
-# 	Created:      11/18/2025, 3:07:58 PM                                       #
-# 	Description:  V5 project                                                   #
-#                                                                              #
-# ---------------------------------------------------------------------------- #
-
-# Library imports
 from vex import *
 
-# Brain should be defined by default
-brain=Brain()
+brain = Brain()
 controller_1 = Controller(PRIMARY)
-MotorRF = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
-MotorRR = Motor(Ports.PORT2, GearSetting.RATIO_6_1, True)
-MotorLF = Motor(Ports.PORT3, GearSetting.RATIO_6_1, False)
-MotorLR = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
-LeftMotorGroup = MotorGroup(MotorLF,MotorLR)
-RightMotorGroup = MotorGroup(MotorRF,MotorRR)
-BotDriveTrain = DriveTrain(LeftMotorGroup,RightMotorGroup)
 
-def Forward(length):
-    BotDriveTrain.drive_for(FORWARD,length,INCHES)
+## Drive motors
+right_motor_front = Motor(Ports.PORT19, GearSetting.RATIO_18_1, False)
+left_motor_front = Motor(Ports.PORT11, GearSetting.RATIO_18_1, True)
+right_motor_rear = Motor(Ports.PORT17, GearSetting.RATIO_18_1, False)
+left_motor_rear = Motor(Ports.PORT14, GearSetting.RATIO_18_1, True)
+left_motor_middle = Motor(Ports.PORT15, GearSetting.RATIO_18_1, True)
+right_motor_middle = Motor(Ports.PORT18, GearSetting.RATIO_18_1, False)
+
+## Spindles
+Spindle1 = Motor(Ports.PORT13, False)
+Spindle2 = Motor(Ports.PORT12, False)
+Spindle3 = Motor(Ports.PORT1, True)
+Spindle4 = Motor(Ports.PORT16, False)
+Spindles = MotorGroup(Spindle1,Spindle2,Spindle3,Spindle4)
+
+
+## Pneumatics
+push_motor1 = Pneumatics(brain.three_wire_port.e)
+push_motor2 = Pneumatics(brain.three_wire_port.f)
+
+## Motor groups & drivetrain
+motor_group_left = MotorGroup(
+    left_motor_front,
+    left_motor_rear,
+    left_motor_middle
+)
+
+motor_group_right = MotorGroup(
+    right_motor_front,
+    right_motor_middle,
+    right_motor_rear
+)
+
+BotDriveTrain = DriveTrain(motor_group_left, motor_group_right)
+
+def Forward():
+    BotDriveTrain.drive_for(FORWARD,9,INCHES)
 
 def Backward(length):
     BotDriveTrain.drive_for(REVERSE,length,INCHES)
@@ -33,9 +50,16 @@ def Right(degree):
 def Left(degree):
     BotDriveTrain.turn_for(LEFT,90,DEGREES)
 
+def MoveSpindleForward():
+    if Spindle1.Velocity() == 0:
+        Spindles.set_velocity(100,PERCENT)
+        Spindles.spine(FORWARD)
+    else:
+        Spindles.stop()
         
 def user_control():
 
+    controller_1.buttonA.pressed(Forward)
     while True:
 
     #MOTOR CONTROL
