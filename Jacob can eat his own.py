@@ -38,7 +38,7 @@ Drivetrain1 = DriveTrain(motor_group_left, motor_group_right)
 
 # input should be in inches, then will convert into turns
 def foward(length):
-    
+    length = length/12.5
     right_motor_front.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
     left_motor_front.spin_for(FORWARD,length,TURNS,wait=False)
     right_motor_middle.spin_for(FORWARD,length,TURNS,wait=False)
@@ -46,7 +46,7 @@ def foward(length):
     right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
     left_motor_rear.spin_for(FORWARD,length,TURNS,wait=True)
 def backward(length):
-    length = length / 13.5
+    length = length / 12.5
     right_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     left_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     right_motor_middle.spin_for(REVERSE,length,TURNS,wait=False)
@@ -170,20 +170,19 @@ def MoveSpindlebackwards2():
 def autonomous():
     '''trial and error abc and qrs
     abc is the length needed to move 2 squares
+    15 = 39cm
     qrs is the length needed to turn 90 degrees
             '''
-    foward(abc)
-    wait(500, MSEC)
-    backward(abc/2)
-    wait(500, MSEC)
-    right(qrs)
-    backward(abc/2)
-    wait(500, MSEC)
-    right(qrs)
-    backward(abc/2)
-    wait(500, MSEC)
-    MoveSpindle()
-
+    foward(32.6923076923)
+    wait(500,MSEC)
+    left(1.2)
+    wait(500,MSEC)
+    foward(13.4615384615)
+    wait(500,MSEC)
+    MoveSpindleforward3()
+    backward(25)
+    wait(500,MSEC)
+    MoveSpindleforward()
 def user_control():
     push_motor1.close()
     push_motor2.close()
