@@ -168,11 +168,17 @@ def MoveSpindlebackwards2():
 
 # autonomous not working yet
 def autonomous():
-    motor_group_right.set_velocity(100, PERCENT)
-    motor_group_left.set_velocity(100, PERCENT)
-
-    motor_group_right.spin(FORWARD)
-    motor_group_left.spin(FORWARD)
+    foward(12.5)
+    wait(500, MSEC)
+    backward(12.5)
+    wait(500, MSEC)
+    right(5)
+    backward(12.5)
+    wait(500, MSEC)
+    right(5)
+    backward(2)
+    wait(500, MSEC)
+    MoveSpindle()
 
 def user_control():
     push_motor1.close()
