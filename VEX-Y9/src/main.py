@@ -68,7 +68,7 @@ drivetrain.turn(LEFT)
 conveyor.spin(FORWARD)
 rubber_wheel_motor.spin(REVERSE)
 
-controller.screen.print("I Am The Cadasio Conveyer Bot 2000 With The Low Taper Fade And The 67 Trim From Tescos")
+controller.screen.print("For The YUGOSLAVIC VEXinius Roboticus CADASIO CONVEYOR BOT 2067 67 EDITION WITH A LOW TAPER FADE (and textured fringe from# EMU and Tesco) that’s nameis way too long lol")
 controller.screen.new_line()
 controller.screen.print("My Creators Were The Lesser Gene Baker, The Least Nik on the Hill Dasgupta, Morer So Ethan Lad And The MOST Ilyas Hosein And The Other Worldly Laith Shadid")
 controller.screen.new_line()
