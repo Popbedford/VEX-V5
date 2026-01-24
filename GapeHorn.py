@@ -88,7 +88,7 @@ def MoveSpindleforward():
         Spindle1.set_velocity(100,PERCENT)
         Spindle2.set_velocity(100,PERCENT)
         Spindle3.set_velocity(100,PERCENT)
-        Spindle4.set_velocity(100,PERCENT)
+        Spindle4.set_velocity(201,RPM)
         Spindle1.spin(FORWARD)
         Spindle2.spin(FORWARD)
         Spindle3.spin(FORWARD)
@@ -105,7 +105,7 @@ def MoveSpindlebackwards():
         Spindle1.set_velocity(100,PERCENT)
         Spindle2.set_velocity(100,PERCENT)
         Spindle3.set_velocity(100,PERCENT)
-        Spindle4.set_velocity(100,PERCENT)
+        Spindle4.set_velocity(201,RPM)
         Spindle1.spin(REVERSE)
         Spindle2.spin(REVERSE)
         Spindle3.spin(REVERSE)
@@ -118,11 +118,13 @@ def MoveSpindlebackwards():
         Spindle4.stop()
 
 def spindle_pickup_only():
-    if Spindle1.velocity() == 0 or Spindle2.velocity() == 0 or Spindle3.velocity() == 0 or Spindle4.velocity() == 0:
+    if Spindle1.velocity() == 0 or Spindle2.velocity() == 0:
         Spindle2.set_velocity(100,PERCENT)
         Spindle1.set_velocity(100,PERCENT)
         Spindle1.spin(FORWARD)
         Spindle2.spin(FORWARD)
+        Spindle3.stop()
+        Spindle4.stop()
        
     else:
         Spindle1.stop()
@@ -135,7 +137,7 @@ def Middle_goal_score():
         Spindle1.set_velocity(100,PERCENT)
         Spindle2.set_velocity(100,PERCENT)
         Spindle3.set_velocity(100,PERCENT)
-        Spindle4.set_velocity(100,PERCENT)
+        Spindle4.set_velocity(201,RPM)
         Spindle1.spin(FORWARD)
         Spindle2.spin(FORWARD)
         Spindle3.spin(FORWARD)
@@ -181,7 +183,7 @@ def TurnSide(Direction, degree): # Direction is "R" or "L", and assumes you are 
         else:
             right(degree)
 
-def autonomous():
+def autonomousOld():
     # right_motor_front.set_velocity(67, PERCENT)
     # left_motor_front.set_velocity(67, PERCENT)
     # right_motor_rear.set_velocity(67, PERCENT)
@@ -241,8 +243,8 @@ def autonomous():
         wait(500,MSEC)
         MoveSpindleforward()
 
-def autonomous2():
-    
+def autonomous():
+   
     right_motor_front.set_velocity(67, PERCENT)
     left_motor_front.set_velocity(67, PERCENT)
     right_motor_rear.set_velocity(67, PERCENT)
@@ -305,5 +307,5 @@ def user_control():
 
 # actions to do when the program starts
 brain.screen.clear_screen()
-comp = Competition(user_control, autonomous2)
+comp = Competition(user_control, autonomous)
 pre_autonomous()
