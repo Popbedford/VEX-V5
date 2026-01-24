@@ -85,10 +85,10 @@ def pnuematic():
 
 def MoveSpindleforward():
     if Spindle1.velocity() == 0 or Spindle2.velocity() == 0 or Spindle3.velocity() == 0 or Spindle4.velocity() == 0:
-        Spindle1.set_velocity(100,PERCENT)
-        Spindle2.set_velocity(100,PERCENT)
+        Spindle1.set_velocity(220,RPM)
+        Spindle2.set_velocity(220,RPM)
         Spindle3.set_velocity(100,PERCENT)
-        Spindle4.set_velocity(201,RPM)
+        Spindle4.set_velocity(250,RPM)
         Spindle1.spin(FORWARD)
         Spindle2.spin(FORWARD)
         Spindle3.spin(FORWARD)
@@ -102,10 +102,10 @@ def MoveSpindleforward():
 
 def MoveSpindlebackwards():
     if Spindle1.velocity() == 0 or Spindle2.velocity() == 0 or Spindle3.velocity() == 0 or Spindle4.velocity() == 0:
-        Spindle1.set_velocity(100,PERCENT)
-        Spindle2.set_velocity(100,PERCENT)
+        Spindle1.set_velocity(220,RPM)
+        Spindle2.set_velocity(220,RPM)
         Spindle3.set_velocity(100,PERCENT)
-        Spindle4.set_velocity(201,RPM)
+        Spindle4.set_velocity(250,RPM)
         Spindle1.spin(REVERSE)
         Spindle2.spin(REVERSE)
         Spindle3.spin(REVERSE)
@@ -119,8 +119,8 @@ def MoveSpindlebackwards():
 
 def spindle_pickup_only():
     if Spindle1.velocity() == 0 or Spindle2.velocity() == 0:
-        Spindle2.set_velocity(100,PERCENT)
-        Spindle1.set_velocity(100,PERCENT)
+        Spindle2.set_velocity(220,RPM)
+        Spindle1.set_velocity(220,RPM)
         Spindle1.spin(FORWARD)
         Spindle2.spin(FORWARD)
         Spindle3.stop()
@@ -134,10 +134,10 @@ def spindle_pickup_only():
 
 def Middle_goal_score():
     if Spindle1.velocity() == 0 and Spindle2.velocity() == 0 and Spindle3.velocity() == 0 and Spindle4.velocity() == 0:
-        Spindle1.set_velocity(100,PERCENT)
-        Spindle2.set_velocity(100,PERCENT)
+        Spindle1.set_velocity(220,RPM)
+        Spindle2.set_velocity(220,RPM)
         Spindle3.set_velocity(100,PERCENT)
-        Spindle4.set_velocity(201,RPM)
+        Spindle4.set_velocity(250,RPM)
         Spindle1.spin(FORWARD)
         Spindle2.spin(FORWARD)
         Spindle3.spin(FORWARD)
