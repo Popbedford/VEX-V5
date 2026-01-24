@@ -1,6 +1,8 @@
 from vex import *
 
 brain = Brain()
+global Left
+Left = True
 global Turn
 Turn=2
 global Mode
@@ -34,7 +36,7 @@ def foward(length):
     right_motor_rear.spin_for(FORWARD,length,TURNS,wait=False)  #one full turn will move 13.5 inches
     left_motor_rear.spin_for(FORWARD,length,TURNS,wait=True)
 def backward(length):
-    length = length / 13.5
+   
     right_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     left_motor_front.spin_for(REVERSE,length,TURNS,wait=False)
     right_motor_middle.spin_for(REVERSE,length,TURNS,wait=False)
@@ -99,7 +101,7 @@ def MoveSpindleforward():
         Spindle4.stop()
 
 def MoveSpindlebackwards():
-    if Spindle1.velocity() == 0 and Spindle2.velocity() == 0 and Spindle3.velocity() == 0 and Spindle4.velocity() == 0:
+    if Spindle1.velocity() == 0 or Spindle2.velocity() == 0 or Spindle3.velocity() == 0 or Spindle4.velocity() == 0:
         Spindle1.set_velocity(100,PERCENT)
         Spindle2.set_velocity(100,PERCENT)
         Spindle3.set_velocity(100,PERCENT)
@@ -116,7 +118,7 @@ def MoveSpindlebackwards():
         Spindle4.stop()
 
 def spindle_pickup_only():
-    if Spindle1.velocity() == 0 and Spindle2.velocity() == 0 and Spindle3.velocity() == 0 and Spindle4.velocity() == 0:
+    if Spindle1.velocity() == 0 or Spindle2.velocity() == 0 or Spindle3.velocity() == 0 or Spindle4.velocity() == 0:
         Spindle2.set_velocity(100,PERCENT)
         Spindle1.set_velocity(100,PERCENT)
         Spindle1.spin(FORWARD)
@@ -164,8 +166,20 @@ def SwitchMode():
 def pre_autonomous():
     push_motor1.open()
     push_motor2.open()
+   
     pass
 
+def TurnSide(Direction, degree): # Direction is "R" or "L", and assumes you are on the right side.
+    if (not Left):
+        if Direction == "R":
+            right(degree)
+        else:
+            left(degree)
+    else:
+        if Direction == "R":
+            left(degree)
+        else:
+            right(degree)
 
 def autonomous():
     # right_motor_front.set_velocity(67, PERCENT)
@@ -186,30 +200,76 @@ def autonomous():
     # backward(mvsqr*2)
     # wait(500,MSEC)
     # MoveSpindleforward()
+    if (not Left):
+        right_motor_front.set_velocity(67, PERCENT)
+        left_motor_front.set_velocity(67, PERCENT)
+        right_motor_rear.set_velocity(67, PERCENT)
+        left_motor_rear.set_velocity(67, PERCENT)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        left_motor_middle.set_velocity(67, PERCENT)
+        right_motor_middle.set_velocity(67, PERCENT)
+        mvsqr = 1.56
+        r_angle = 0.83
+        pnuematic()
+        foward(1.5*mvsqr)
+        wait(500,MSEC)
+        right(r_angle)
+        wait(500,MSEC)
+        foward(mvsqr)
+        wait(500,MSEC)
+        spindle_pickup_only()
+        wait(3, SECONDS)
+        backward(mvsqr*2.167)
+        wait(500,MSEC)
+        MoveSpindleforward()
+    else:
+        right_motor_front.set_velocity(67, PERCENT)
+        left_motor_front.set_velocity(67, PERCENT)
+        right_motor_rear.set_velocity(67, PERCENT)
+        left_motor_rear.set_velocity(67, PERCENT)
+        left_motor_middle.set_velocity(67, PERCENT)
+        right_motor_middle.set_velocity(67, PERCENT)
+        mvsqr = 1.56
+        r_angle = 0.85
+        foward(1.55*mvsqr)
+        wait(500,MSEC)
+        left(r_angle)
+        wait(500,MSEC)
+        foward(mvsqr)
+        wait(500,MSEC)
+        spindle_pickup_only()
+        backward(mvsqr*2)
+        wait(500,MSEC)
+        MoveSpindleforward()
+
+def autonomous2():
+    
     right_motor_front.set_velocity(67, PERCENT)
     left_motor_front.set_velocity(67, PERCENT)
     right_motor_rear.set_velocity(67, PERCENT)
-    left_motor_rear.set_velocity(67, PERCENT)
+    left_motor_rear.set_velocity(67, PERCENT)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
     left_motor_middle.set_velocity(67, PERCENT)
     right_motor_middle.set_velocity(67, PERCENT)
     mvsqr = 1.56
-    r_angle = 0.85
+    r_angle = 0.83
     pnuematic()
-    foward(1.5*mvsqr)
+    foward(1.55*mvsqr)
     wait(500,MSEC)
-    right(r_angle)
+    TurnSide("R",r_angle)
     wait(500,MSEC)
-    foward(mvsqr)
+    foward(0.95*mvsqr)
     wait(500,MSEC)
     spindle_pickup_only()
-    wait(2713, MSEC)
-    backward(mvsqr*3)
+    wait(3, SECONDS)
+    backward(mvsqr*2.167)
     wait(500,MSEC)
-    while True:
-        MoveSpindleforward()
-
-
-
+    MoveSpindleforward()
+   
+def autonomous_skills():
+    pnuematic()
+    MoveSpindleforward()
+    foward(1.56)
+    wait(90, SECONDS)
+    pass
 
 def user_control():
 
@@ -245,5 +305,5 @@ def user_control():
 
 # actions to do when the program starts
 brain.screen.clear_screen()
-comp = Competition(user_control, autonomous)
+comp = Competition(user_control, autonomous2)
 pre_autonomous()
