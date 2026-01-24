@@ -12,9 +12,9 @@ from vex import *
 controller=Controller()
 brain = Brain()
 left_motor_front = Motor(Ports.PORT3,GearSetting.RATIO_18_1,False)
-left_motor_rear = Motor(Ports.PORT8,GearSetting.RATIO_18_1,True)
+left_motor_rear = Motor(Ports.PORT8,GearSetting.RATIO_18_1,False)
 right_motor_front = Motor(Ports.PORT7,GearSetting.RATIO_18_1,True)
-right_motor_rear = Motor(Ports.PORT1,GearSetting.RATIO_18_1,False)
+right_motor_rear = Motor(Ports.PORT1,GearSetting.RATIO_18_1,True)
 left_motors = MotorGroup(left_motor_front, left_motor_rear)
 right_motors = MotorGroup(right_motor_front, right_motor_rear)
 
@@ -40,10 +40,10 @@ def user_control():
     brain.screen.print("driver control")
     # place driver control in this while loop
     while True:
-        x=controller.axis1.position()
+        x=controller.axis2.position()
         drivetrain.set_drive_velocity(x, PERCENT)
         brain.screen.print(x)
-        drivetrain.set_turn_velocity(controller.axis2.position(), PERCENT)
+        drivetrain.set_turn_velocity(controller.axis1.position(), PERCENT)
 
         #conveyor
 
@@ -57,22 +57,18 @@ def user_control():
         if controller.buttonL2.pressing()==True:
             rubber_wheel_motor.set_velocity(-50, PERCENT)
         elif controller.buttonR2.pressing()==True:
-            rubber_wheel_motor.set_velocity(50, PERCENT)
+            rubber_wheel_motor.set_velocity(100, PERCENT)
         else:
             rubber_wheel_motor.set_velocity(0, PERCENT)
 
-# create competition instance aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 comp = Competition(user_control, autonomous)
 
-# actions to do when the program starts
-brain.screen.print("hello")
-#
-
-drivetrain.drive(FORWARD)
-drivetrain.turn(RIGHT)
+drivetrain.drive(REVERSE)
+drivetrain.turn(LEFT)
 conveyor.spin(FORWARD)
 rubber_wheel_motor.spin(REVERSE)
 
-controller.screen.print("I Am The Cadasio Conveyer Bot 2000 With The Low Taper Fade Amd the 67 Trim Fro Tescos")
+controller.screen.print("I Am The Cadasio Conveyer Bot 2000 With The Low Taper Fade And The 67 Trim From Tescos")
 controller.screen.new_line()
-controller.screen.print("My Creators Were Gene Baker, Nikhil Dasgupta And Lesser So Ilyas Hosein")
+controller.screen.print("My Creators Were The Lesser Gene Baker, The Least Nik on the Hill Dasgupta, Morer So Ethan Lad And The MOST Ilyas Hosein And The Other Worldly Laith Shadid")
+controller.screen.new_line()
