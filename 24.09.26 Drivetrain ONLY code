@@ -1,0 +1,41 @@
+from vex import *
+
+brain = Brain()
+
+controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
+controller_2 = Controller()
+
+right_motor_front = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
+right_motor_middle = Motor(Ports.PORT4, GearSetting.RATIO_18_1, False)
+right_motor_rear = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)
+motor_group_right = MotorGroup(right_motor_front, right_motor_middle, right_motor_rear)
+
+left_motor_front = Motor(Ports.PORT1, GearSetting.RATIO_18_1, True)
+left_motor_middle = Motor(Ports.PORT3, GearSetting.RATIO_18_1, True)
+left_motor_rear = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)
+motor_group_left = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)
+
+def user_control():
+
+    while True:
+
+    #MOTOR CONTROL
+        # Single joystick control
+
+        motor_group_left.set_velocity((controller_1.axis3.position() + (controller_1.axis4.position())), PERCENT)
+        motor_group_right.set_velocity((controller_1.axis3.position() - (controller_1.axis4.position())), PERCENT)
+
+            
+        motor_group_right.spin(FORWARD)
+        motor_group_left.spin(FORWARD)
+        wait(5, MSEC)
+
+def autonomous():
+    pass
+
+# create competition instance
+comp = Competition(user_control,autonomous)
+user_control()
+
+# actions to do when the program starts
+brain.screen.clear_screen()
