@@ -1,1 +1,102 @@
-{"mode":"Text","hardwareTarget":"brain","textContent":"\"\"\"\nTO DO:\nCreate other motor objects for lifting mechanism and grabber.\nGet lifting system subroutines working. controller_2?\n\n\"\"\"\n\nfrom vex import *\n\nbrain = Brain()\n\ncontroller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls\ncontroller_2 = Controller(PARTNER)\n\nglobal Turn\nTurn=70\n\nglobal TankMode\nTankMode=False\n\nright_motor_front = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)\nright_motor_middle = Motor(Ports.PORT4, GearSetting.RATIO_18_1, False)\nright_motor_rear = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)\nmotor_group_right = MotorGroup(right_motor_front, right_motor_middle, right_motor_rear)\n\nleft_motor_front = Motor(Ports.PORT1, GearSetting.RATIO_18_1, True)\nleft_motor_middle = Motor(Ports.PORT3, GearSetting.RATIO_18_1, True)\nleft_motor_rear = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)\nmotor_group_left = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)\n\n#height_adjustment_motor = Motor(Ports.PORT7, GearSetting RATION_36_1, True)\n\n##Helper Method for debugging\ndef ScreenPrint(Message):\n    brain.screen.print(Message)\n    brain.screen.next_row()\n\ndef IncTurn():\n    global Turn\n    if Turn<100:\n        Turn+=5\n# \n\ndef DecTurn():\n    global Turn\n    if Turn>5:\n        Turn-=5\n#\n\n\ndef ToggleTankMode():\n    global TankMode\n    if TankMode:\n        TankMode = False\n        ScreenPrint(\"Tank Mode off\")\n    else:\n        TankMode = True\n        ScreenPrint(\"Tank Mode on\")\n\n\ndef user_control():\n    global TankMode\n    controller_1.buttonUp.pressed(IncTurn)\n    controller_1.buttonDown.pressed(DecTurn)\n    controller_1.buttonA.pressed(ToggleTankMode)\n\n    while True:\n    #MOTOR CONTROL\n        # Single joystick control\n        \n        if TankMode==False:\n            motor_group_left.set_velocity(controller_1.axis3.position() + (controller_1.axis4.position()*Turn/100), PERCENT)\n            motor_group_right.set_velocity(controller_1.axis3.position() - (controller_1.axis4.position()*Turn/100), PERCENT)\n        \n        # Tank mode\n        else:\n            motor_group_left.set_velocity(controller_1.axis3.position(), PERCENT)\n            motor_group_right.set_velocity(controller_1.axis2.position(), PERCENT)\n\n        #height_adjustment_motor.set_velocity(controller_2.axis3.position(), PERCENT)\n\n        #height_adjustment_motor.spin(FORWARD)\n        motor_group_right.spin(FORWARD)\n        motor_group_left.spin(FORWARD)\n        wait(5, MSEC)\n\ndef autonomous_skills():\n    motor_group_left.spin(FORWARD, 50, PERCENT)\n    motor_group_right.spin(FORWARD, 50, PERCENT)\n    wait(2.5, SECONDS)\n    motor_group_left.stop()\n    wait(1.4, SECONDS)\n    motor_group_left.spin(FORWARD, 50, PERCENT)\n    wait(3.5, SECONDS)\n    motor_group_right.stop()\n    motor_group_left.stop()\n\n# create competition instance\ncomp = Competition(user_control,autonomous_skills) # This calls the subroutines: we don't need to!\n\n# actions to do when the program starts\nbrain.screen.clear_screen()","textLanguage":"python","robotConfig":[],"slot":1,"platform":"V5","sdkVersion":"20240802.15.00.00","appVersion":"4.68.0","fileFormat":"2.0.0","targetBrainGen":"First","v5Sounds":[{"name":"game over","url":"static/sounds/mixkit-arcade-retro-game-over-213.wav"}],"v5SoundsEnabled":false,"aiVisionSettings":{"colors":[],"codes":[],"tags":true,"AIObjects":true,"AIObjectModel":[],"aiModelDropDownValue":null}}
+"""
+TO DO:
+Create other motor objects for lifting mechanism and grabber.
+Get lifting system subroutines working. controller_2?
+
+"""
+
+from vex import *
+
+brain = Brain()
+
+controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
+controller_2 = Controller(PARTNER)
+
+global Turn
+Turn=70
+
+global TankMode
+TankMode=False
+
+right_motor_front = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
+right_motor_middle = Motor(Ports.PORT4, GearSetting.RATIO_18_1, False)
+right_motor_rear = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)
+motor_group_right = MotorGroup(right_motor_front, right_motor_middle, right_motor_rear)
+
+left_motor_front = Motor(Ports.PORT1, GearSetting.RATIO_18_1, True)
+left_motor_middle = Motor(Ports.PORT3, GearSetting.RATIO_18_1, True)
+left_motor_rear = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)
+motor_group_left = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)
+
+#height_adjustment_motor = Motor(Ports.PORT7, GearSetting RATION_36_1, True)
+
+##Helper Method for debugging
+def ScreenPrint(Message):
+    brain.screen.print(Message)
+    brain.screen.next_row()
+
+def IncTurn():
+    global Turn
+    if Turn<100:
+        Turn+=5
+# 
+
+def DecTurn():
+    global Turn
+    if Turn>5:
+        Turn-=5
+#
+
+
+def ToggleTankMode():
+    global TankMode
+    if TankMode:
+        TankMode = False
+        ScreenPrint("Tank Mode off")
+    else:
+        TankMode = True
+        ScreenPrint("Tank Mode on")
+
+
+def user_control():
+    global TankMode
+    controller_1.buttonUp.pressed(IncTurn)
+    controller_1.buttonDown.pressed(DecTurn)
+    controller_1.buttonA.pressed(ToggleTankMode)
+
+    while True:
+    #MOTOR CONTROL
+        # Single joystick control
+        
+        if TankMode==False:
+            motor_group_left.set_velocity(controller_1.axis3.position() + (controller_1.axis4.position()*Turn/100), PERCENT)
+            motor_group_right.set_velocity(controller_1.axis3.position() - (controller_1.axis4.position()*Turn/100), PERCENT)
+        
+        # Tank mode
+        else:
+            motor_group_left.set_velocity(controller_1.axis3.position(), PERCENT)
+            motor_group_right.set_velocity(controller_1.axis2.position(), PERCENT)
+
+        #height_adjustment_motor.set_velocity(controller_2.axis3.position(), PERCENT)
+
+        #height_adjustment_motor.spin(FORWARD)
+        motor_group_right.spin(FORWARD)
+        motor_group_left.spin(FORWARD)
+        wait(5, MSEC)
+
+def autonomous_skills():
+    motor_group_left.spin(FORWARD, 50, PERCENT)
+    motor_group_right.spin(FORWARD, 50, PERCENT)
+    wait(2.5, SECONDS)
+    motor_group_left.stop()
+    wait(1.4, SECONDS)
+    motor_group_left.spin(FORWARD, 50, PERCENT)
+    wait(3.5, SECONDS)
+    motor_group_right.stop()
+    motor_group_left.stop()
+
+# create competition instance
+comp = Competition(user_control,autonomous_skills) # This calls the subroutines: we don't need to!
+
+# actions to do when the program starts
+brain.screen.clear_screen()
