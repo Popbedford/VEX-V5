@@ -85,15 +85,7 @@ def user_control():
         wait(5, MSEC)
 
 def autonomous_skills():
-    motor_group_left.spin(FORWARD, 50, PERCENT)
-    motor_group_right.spin(FORWARD, 50, PERCENT)
-    wait(2.5, SECONDS)
-    motor_group_left.stop()
-    wait(1.4, SECONDS)
-    motor_group_left.spin(FORWARD, 50, PERCENT)
-    wait(3.5, SECONDS)
-    motor_group_right.stop()
-    motor_group_left.stop()
+    pass
 
 # create competition instance
 comp = Competition(user_control,autonomous_skills) # This calls the subroutines: we don't need to!
