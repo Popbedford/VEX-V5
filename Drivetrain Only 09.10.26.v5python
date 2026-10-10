@@ -84,11 +84,36 @@ def user_control():
         motor_group_left.spin(FORWARD)
         wait(5, MSEC)
 
-def autonomous_skills():
-    pass
+def autonomous():
+    motor_group_left.spin(REVERSE, 50, PERCENT)
+    motor_group_right.spin(REVERSE, 50, PERCENT)
+    wait(0.9, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    wait(0.5, SECONDS)
+    motor_group_left.spin(FORWARD, 25, PERCENT)
+    motor_group_right.spin(REVERSE, 25, PERCENT)
+    wait(2.5, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    wait(0.5, SECONDS)
+    motor_group_left.spin(REVERSE, 100, PERCENT)
+    motor_group_right.spin(REVERSE, 100, PERCENT)
+    wait(1.5, SECONDS)
+    motor_group_left.spin(FORWARD, 50, PERCENT)
+    motor_group_right.spin(FORWARD, 50, PERCENT)
+    wait(0.9, SECONDS)
+    motor_group_left.spin(REVERSE, 100, PERCENT)
+    motor_group_right.spin(REVERSE, 100, PERCENT)
+    wait(1.5, SECONDS)
+    motor_group_left.spin(FORWARD, 50, PERCENT)
+    motor_group_right.spin(FORWARD, 50, PERCENT)
+    wait(0.5, SECONDS)
+    motor_group_right.stop()
+    motor_group_left.stop()
 
 # create competition instance
-comp = Competition(user_control,autonomous_skills) # This calls the subroutines: we don't need to!
+comp = Competition(user_control,autonomous) # This calls the subroutines: we don't need to!
 
 # actions to do when the program starts
 brain.screen.clear_screen()
