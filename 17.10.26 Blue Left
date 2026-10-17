@@ -1,0 +1,188 @@
+from vex import *
+
+brain = Brain()
+
+controller_1 = Controller(PRIMARY) ##This is the controller object so we can get input from the controls
+controller_2 = Controller(PARTNER)
+
+global Turn
+Turn=70
+
+global TankMode
+TankMode=False
+
+global ClawClosed
+ClawClosed=False
+
+right_motor_front = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
+right_motor_middle = Motor(Ports.PORT4, GearSetting.RATIO_18_1, False)
+right_motor_rear = Motor(Ports.PORT6, GearSetting.RATIO_18_1, False)
+motor_group_right = MotorGroup(right_motor_front, right_motor_middle, right_motor_rear)
+
+left_motor_front = Motor(Ports.PORT1, GearSetting.RATIO_18_1, True)
+left_motor_middle = Motor(Ports.PORT3, GearSetting.RATIO_18_1, True)
+left_motor_rear = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)
+motor_group_left = MotorGroup(left_motor_front, left_motor_middle, left_motor_rear)
+
+Sensor_1 = Optical(Ports.PORT10)
+Claw = Pneumatics(brain.three_wire_port.a)
+
+lift_motor_1 = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
+lift_motor_2 = Motor(Ports.PORT8, GearSetting.RATIO_18_1, True)
+lift_motor_group=MotorGroup(lift_motor_1, lift_motor_2)
+
+##Helper Method for debugging
+def ScreenPrint(Message):
+    brain.screen.print(Message)
+    brain.screen.next_row()
+#
+
+def IncTurn():
+    global Turn
+    if Turn<100:
+        Turn+=5
+# 
+
+def DecTurn():
+    global Turn
+    if Turn>5:
+        Turn-=5
+#
+
+def ClawChange():
+    global ClawClosed
+    if ClawClosed==False:
+        ClawClosed=True
+        Claw.close()
+    else:
+        ClawClosed=False
+        Claw.open()
+#
+
+def ToggleTankMode():
+    global TankMode
+    if TankMode:
+        TankMode = False
+        ScreenPrint("Tank Mode off")
+    else:
+        TankMode = True
+        ScreenPrint("Tank Mode on")
+#
+
+def SenseColour():
+    ColourNum=int(Sensor_1.hue())
+    brain.screen.print(ColourNum)
+    if ColourNum<25 or ColourNum>335:
+        brain.screen.print("red")
+        return("red")
+    elif ColourNum>=25 and ColourNum<120:
+        brain.screen.print("yellow")
+        return("yellow")
+    else:
+        brain.screen.print("blue")
+        return("blue")
+#
+
+def user_control():
+    controller_1.buttonL2.pressed(SenseColour)
+    controller_1.buttonL1.pressed(ClawChange)
+    controller_1.buttonUp.pressed(IncTurn)
+    controller_1.buttonDown.pressed(DecTurn)
+    controller_1.buttonA.pressed(ToggleTankMode)
+    controller_1.buttonY.pressed(SenseColour) # TEST SUBROUTINE: checks what colour and number is output.
+
+    while True:
+    #MOTOR CONTROL
+        # Single joystick control
+        
+        if TankMode==False:
+            motor_group_left.set_velocity(controller_1.axis3.position() + (controller_1.axis4.position()*Turn/100), PERCENT)
+            motor_group_right.set_velocity(controller_1.axis3.position() - (controller_1.axis4.position()*Turn/100), PERCENT)
+        
+        # Tank mode
+        else:
+            motor_group_left.set_velocity(controller_1.axis3.position(), PERCENT)
+            motor_group_right.set_velocity(controller_1.axis2.position(), PERCENT)
+
+        motor_group_right.spin(FORWARD)
+        motor_group_left.spin(FORWARD)
+
+        lift_motor_group.set_velocity(100, PERCENT)
+        if controller_1.buttonR1.pressing():
+            lift_motor_group.spin(FORWARD)
+        elif controller_1.buttonR2.pressing():
+            lift_motor_group.spin(REVERSE)
+        else:
+            lift_motor_group.stop()
+        # Lifting the claw
+
+        wait(5, MSEC)
+#
+
+def autonomous():
+    motor_group_left.spin(FORWARD, 70, PERCENT)
+    motor_group_right.spin(FORWARD, 70, PERCENT)
+    lift_motor_group.spin(FORWARD, 100, PERCENT)
+    wait(0.6, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    lift_motor_group.stop()
+    wait(0.4, SECONDS)
+    motor_group_left.spin(FORWARD, 100, PERCENT)
+    motor_group_right.spin(REVERSE, 100, PERCENT)
+    wait(0.2, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    wait(0.5, SECONDS)
+    motor_group_left.spin(FORWARD, 100, PERCENT)
+    motor_group_right.spin(FORWARD, 100, PERCENT)
+    wait(0.7, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    lift_motor_group.spin(REVERSE, 100, PERCENT)
+    wait(1, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    Claw.open()
+    Claw.open()
+    wait(0.2, SECONDS)
+    lift_motor_group.spin(FORWARD, 100, PERCENT)
+    motor_group_left.spin(REVERSE, 100, PERCENT)
+    motor_group_right.spin(REVERSE, 100, PERCENT)
+    wait(0.7, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+    wait(0.8, SECONDS)
+    lift_motor_group.stop()
+    motor_group_left.spin(FORWARD, 100, PERCENT)
+    motor_group_right.spin(REVERSE, 100, PERCENT)
+    wait(0.2, SECONDS)
+    motor_group_left.spin(FORWARD, 100, PERCENT)
+    motor_group_right.spin(FORWARD, 100, PERCENT)
+    wait(0.5, SECONDS)
+    motor_group_left.stop()
+    motor_group_right.stop()
+
+    wait(15)
+    brain.screen.print("Sensing Colours")
+    Sensor_1.set_light(100, PERCENT)
+    wait(0.6, SECONDS)
+    while SenseColour()!="blue":
+        brain.screen.next_row()      
+        motor_group_left.spin(FORWARD, 50, PERCENT)
+        motor_group_right.spin(FORWARD, 50, PERCENT)
+        wait(1, SECONDS)
+        motor_group_left.spin(REVERSE, 100, PERCENT)
+        motor_group_right.spin(REVERSE, 100, PERCENT)
+        wait(0.2, SECONDS)
+        motor_group_right.stop()
+        motor_group_left.stop()
+        wait(0.5, SECONDS)
+    Sensor_1.set_light(0, PERCENT)
+#
+
+# create competition instance
+comp = Competition(user_control,autonomous) # This calls the subroutines: we don't need to!
+
+# actions to do when the program starts
+brain.screen.clear_screen()
